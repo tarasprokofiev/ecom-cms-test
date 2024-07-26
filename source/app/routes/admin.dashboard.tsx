@@ -1,14 +1,14 @@
-import React from "react";
-import {json, LoaderFunctionArgs} from "@remix-run/node";
-import {authenticator} from "~/.server/services/auth.service";
-import {useLoaderData} from "@remix-run/react";
+import React from 'react';
+import {json, LoaderFunctionArgs} from '@remix-run/node';
+import {authenticator} from '~/.server/services/auth.service';
+import {useLoaderData} from '@remix-run/react';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({request}: LoaderFunctionArgs) {
   const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/admin/auth/login",
+    failureRedirect: '/admin/auth/login',
   });
 
-  return json({ user })
+  return json({user})
 }
 
 export default function Index() {

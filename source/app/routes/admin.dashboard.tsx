@@ -1,18 +1,11 @@
 import React from 'react';
-import {json, LoaderFunctionArgs} from '@remix-run/node';
-import {authenticator} from '~/.server/admin/services/auth.service';
 import {useLoaderData} from '@remix-run/react';
+import {adminDashboardLoader} from '~/.server/admin/loaders/dashboard.loader';
 
-export async function loader({request}: LoaderFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/admin/auth/login',
-  });
-
-  return json({user})
-}
+export const loader = adminDashboardLoader;
 
 export default function Index() {
-  const data = useLoaderData<typeof loader>()
+  const data = useLoaderData<typeof loader>();
 
   return (
     <div className="font-sans p-4">

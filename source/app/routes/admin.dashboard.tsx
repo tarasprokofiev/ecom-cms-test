@@ -1,6 +1,6 @@
 import React from 'react';
 import {json, LoaderFunctionArgs} from '@remix-run/node';
-import {authenticator} from '~/.server/services/auth.service';
+import {authenticator} from '~/.server/admin/services/auth.service';
 import {useLoaderData} from '@remix-run/react';
 
 export async function loader({request}: LoaderFunctionArgs) {

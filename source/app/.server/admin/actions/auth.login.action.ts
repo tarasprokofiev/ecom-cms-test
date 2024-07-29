@@ -1,4 +1,4 @@
-import {ActionFunctionArgs, json} from '@remix-run/node';
+import {ActionFunctionArgs} from '@remix-run/node';
 import {ADMIN_AUTH_STRATEGY, authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/.server/admin/constants/navigation.constant';
 import {AuthorizationError} from 'remix-auth';
@@ -24,17 +24,16 @@ export async function adminAuthLoginAction({request}: ActionFunctionArgs) {
         return validationError(error.cause.validatorError);
       }
 
-      return json({
-        error: {
-          message: error.message
+      return validationError({
+        fieldErrors: {
+          error: error.message
         }
       });
     }
 
-
-    return json({
-      error: {
-        message: 'Unknown Error'
+    return validationError({
+      fieldErrors: {
+        error: 'Unknown Error'
       }
     });
   }

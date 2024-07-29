@@ -22,6 +22,7 @@ const findUser = async (email: string, password: string): Promise<User> => {
     });
   }
 
+
   if (!(await comparePassword(password, user.password))) {
     throw new ValidatorErrorWrapper({
       fieldErrors: {

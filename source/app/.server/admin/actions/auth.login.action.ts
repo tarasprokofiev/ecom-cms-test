@@ -2,6 +2,8 @@ import {ActionFunctionArgs, json} from '@remix-run/node';
 import {ADMIN_AUTH_STRATEGY, authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/.server/admin/constants/navigation.constant';
 import {AuthorizationError} from 'remix-auth';
+import {validationError} from 'remix-validated-form';
+import {ValidatorErrorWrapper} from '~/.server/shared/errors/validator-error-wrapper';
 
 export async function adminAuthLoginAction({request}: ActionFunctionArgs) {
   try {
@@ -17,14 +19,18 @@ export async function adminAuthLoginAction({request}: ActionFunctionArgs) {
       return error;
     }
 
-
     if (error instanceof AuthorizationError) {
+      if (error.cause instanceof ValidatorErrorWrapper) {
+        return validationError(error.cause.validatorError);
+      }
+
       return json({
         error: {
           message: error.message
         }
       });
     }
+
 
     return json({
       error: {

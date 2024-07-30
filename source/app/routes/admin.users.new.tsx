@@ -1,24 +1,20 @@
 import React from 'react';
 import {useLoaderData} from '@remix-run/react';
+import {adminDashboardLoader} from '~/.server/admin/loaders/dashboard.loader';
 import {BlockStack, Card, Page, Text} from '@shopify/polaris';
-import {PlusIcon} from '@shopify/polaris-icons';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
-import {adminUsersLoader} from '~/.server/admin/loaders/users.loader';
 
-export const loader = adminUsersLoader;
+export const loader = adminDashboardLoader;
 
-export default function AdminUsersIndex() {
+export default function AdminUsersNew() {
   const data = useLoaderData<typeof loader>();
 
   return (
     <Page
       fullWidth
-      title="Users"
-      primaryAction={{
-        content: 'Create user',
-        icon: PlusIcon,
-        accessibilityLabel: 'Create user',
-        url: EAdminNavigation.usersCreate,
+      title="Create new user"
+      backAction={{
+        url: EAdminNavigation.users
       }}
     >
       <Card>
@@ -26,9 +22,9 @@ export default function AdminUsersIndex() {
           <Text as="h2" variant="headingSm">
             Credit card
           </Text>
-          <pre>
-            {JSON.stringify(data, null, 2)}
-          </pre>
+          <Text as="p" variant="bodyMd">
+            Credit card information
+          </Text>
         </BlockStack>
       </Card>
     </Page>

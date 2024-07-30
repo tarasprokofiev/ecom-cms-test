@@ -1,8 +1,9 @@
 import {User} from '@prisma/client';
 
-type ExcludedField = 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'
+type ExcludedField = 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'
 
-export interface IUserDto extends Omit<User, ExcludedField> {
+export type TUserDto = Omit<User, ExcludedField> & {
+  id: string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

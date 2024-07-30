@@ -1,9 +1,9 @@
 import {User} from '@prisma/client';
-import {IUserDto} from '~/.server/admin/dto/user.dto';
+import {TUserDto} from '~/.server/admin/dto/user.dto';
 
-export const userMapper = (user: User): IUserDto => {
+export const userMapper = (user: User): TUserDto => {
   return {
-    id: user.id,
+    id: String(user.id),
     email: user.email,
     role: user.role,
     fullName: user.fullName,

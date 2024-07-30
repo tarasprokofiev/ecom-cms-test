@@ -1,32 +1,33 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useLoaderData} from '@remix-run/react';
 import {adminDashboardLoader} from '~/.server/admin/loaders/dashboard.loader';
-import {BlockStack, Card, Page, Text} from '@shopify/polaris';
+import {Page} from '@shopify/polaris';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
+import {UsersNewForm} from '~/admin/components/UsersNewForm/UsersNewForm';
+import {usersNewFormValidator} from '~/admin/components/UsersNewForm/UsersNewForm.validator';
+import {ValidatedForm} from 'remix-validated-form';
+import {ValidatedSubmitButton} from '~/admin/ui/ValidatedSubmitButton/ValidatedSubmitButton';
 
 export const loader = adminDashboardLoader;
 
 export default function AdminUsersNew() {
   const data = useLoaderData<typeof loader>();
 
+  const primaryAction = useCallback(() => (
+    <ValidatedSubmitButton text="save" variant="primary"/>
+  ), []);
+
   return (
-    <Page
-      fullWidth
-      title="Create new user"
-      backAction={{
-        url: EAdminNavigation.users
-      }}
-    >
-      <Card>
-        <BlockStack gap="200">
-          <Text as="h2" variant="headingSm">
-            Credit card
-          </Text>
-          <Text as="p" variant="bodyMd">
-            Credit card information
-          </Text>
-        </BlockStack>
-      </Card>
-    </Page>
+    <ValidatedForm validator={usersNewFormValidator} method="post">
+      <Page
+        title="Create new user"
+        backAction={{
+          url: EAdminNavigation.users
+        }}
+        primaryAction={primaryAction()}
+      >
+        <UsersNewForm/>
+      </Page>
+    </ValidatedForm>
   );
 }

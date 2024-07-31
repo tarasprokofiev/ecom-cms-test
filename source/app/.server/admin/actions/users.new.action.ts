@@ -5,6 +5,7 @@ import {validationError} from 'remix-validated-form';
 import {usersNewFormValidator} from '~/admin/components/UsersNewForm/UsersNewForm.validator';
 import {prisma} from '~/.server/shared/utils/prisma.util';
 import {$Enums} from '@prisma/client';
+import {hashPassword} from '~/.server/shared/utils/auth.util';
 
 export async function adminUsersNewAction({request}: ActionFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -36,7 +37,7 @@ export async function adminUsersNewAction({request}: ActionFunctionArgs) {
   const newUser = await prisma.user.create({
     data: {
       email,
-      password,
+      password: await hashPassword(password),
       fullName: `${firstName} ${lastName}`,
       role: role as $Enums.AdminRole
     }

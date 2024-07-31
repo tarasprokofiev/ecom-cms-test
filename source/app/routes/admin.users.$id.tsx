@@ -1,13 +1,16 @@
 import React from 'react';
 import {useLoaderData} from '@remix-run/react';
-import {adminDashboardLoader} from '~/.server/admin/loaders/dashboard.loader';
 import {Page} from '@shopify/polaris';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {UsersSingle} from '~/admin/components/UsersSingle/UsersSingle';
+import {adminUsersSingleLoader} from '~/.server/admin/loaders/users.single.loader';
+import {adminUsersRoleAction} from '~/.server/admin/actions/users.role.action';
 
-export const loader = adminDashboardLoader;
+export const loader = adminUsersSingleLoader;
 
-export default function AdminUsersNew() {
+export const action = adminUsersRoleAction;
+
+export default function AdminUsersSingle() {
   const {user} = useLoaderData<typeof loader>();
 
   return (

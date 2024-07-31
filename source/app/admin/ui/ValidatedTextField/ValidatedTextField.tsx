@@ -19,7 +19,6 @@ export const ValidatedTextField = (props: ValidatedTextFieldProps) => {
   }, [setValue, inputPropsOnChange]);
 
   useEffect(() => {
-    console.log('defaultValue', defaultValue);
     if (defaultValue) {
       setValue(defaultValue);
     }

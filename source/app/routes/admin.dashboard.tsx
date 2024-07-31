@@ -7,7 +7,7 @@ import {adminLoader} from '~/.server/admin/loaders/admin.loader';
 export default function AdminDashboard() {
   const data = useRouteLoaderData<typeof adminLoader>('routes/admin');
 
-  if (!data) {
+  if (!data?.user) {
     return null;
   }
 

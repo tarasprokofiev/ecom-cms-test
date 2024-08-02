@@ -1,9 +1,18 @@
 import {ChoiceList, IndexFilters, IndexFiltersProps, useSetIndexFiltersMode,} from '@shopify/polaris';
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import type {EAccountStatus, TAdminUsersLoaderData} from '~/.server/admin/loaders/users.loader';
 import {useSearchParams} from '@remix-run/react';
-import {useDebounce} from '~/admin/hooks/useDebounce';
 import {$Enums} from '@prisma/client';
+
+function debounce(callback: (...args: unknown[]) => void, delay = 300) {
+  let time: number;
+  return (...args: unknown[]) => {
+    clearTimeout(time);
+    time = window.setTimeout(() => {
+      callback(...args);
+    }, delay);
+  };
+}
 
 export interface UsersTableFiltersProps {
   query?: TAdminUsersLoaderData['query'];
@@ -44,28 +53,54 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
   /* SORT END */
 
   /* FILTERS START */
-  const [queryValue, setQueryValue] = useState(query?.q || '');
-  const searchDebouncedValue = useDebounce(queryValue, 300);
+  const serverQueryValue = query?.q || '';
+  const [queryValue, setQueryValue] = useState(serverQueryValue);
+
+  const timerRef = React.useRef<number | null>(null);
 
   const handleFiltersQueryChange = useCallback((value: string) => {
-    if (searchParams.get('q') === value) {
-      return;
+    setQueryValue(value);
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
 
-    setSearchParams((prev) => {
-      if (value === '') {
-        prev.delete('q');
+    timerRef.current = window.setTimeout(() => {
+      setSearchParams((prev) => {
+        if (value === '') {
+          prev.delete('q');
+          return prev;
+        }
+
+        prev.set('q', value);
         return prev;
-      }
+      });
+    }, 300);
+  }, [setSearchParams]);
 
-      prev.set('q', value);
-      return prev;
-    });
-  }, [setSearchParams, searchParams]);
+  // const [queryValue, setQueryValue] = useState(query?.q || '');
+  // const searchDebouncedValue = useDebounce(queryValue, 300);
 
-  useEffect(() => {
-    handleFiltersQueryChange(searchDebouncedValue);
-  }, [searchDebouncedValue, handleFiltersQueryChange]);
+  // const handleFiltersQueryChange = useCallback((value: string) => {
+  //
+  //   if ((searchParams.get('q') || '') === value) {
+  //     return;
+  //   }
+  //
+  //   setSearchParams((prev) => {
+  //     if (value === '') {
+  //       prev.delete('q');
+  //       return prev;
+  //     }
+  //
+  //     prev.set('q', value);
+  //     return prev;
+  //   });
+  // }, [setSearchParams]);
+  //
+  // useEffect(() => {
+  //   handleFiltersQueryChange(searchDebouncedValue);
+  // }, [searchDebouncedValue, handleFiltersQueryChange]);
 
   const [role, setRole] = useState<string[] | undefined>(
     query?.role,
@@ -114,14 +149,14 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
     setQueryValue('');
     setRole(undefined);
     setAccountStatus(undefined);
-    
+
     setSearchParams((prev) => {
       prev.delete('q');
       prev.delete('role');
       prev.delete('accountStatus');
       return prev;
     });
-  }, [setSearchParams, setQueryValue, setAccountStatus]);
+  }, [setSearchParams, setAccountStatus]);
 
   const filters = [
     {
@@ -193,8 +228,8 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
       sortSelected={sortSelected}
       queryValue={queryValue}
       queryPlaceholder="Search users"
-      onQueryChange={setQueryValue}
-      onQueryClear={() => setQueryValue('')}
+      onQueryChange={handleFiltersQueryChange}
+      onQueryClear={() => handleFiltersQueryChange('')}
       onSort={setSortSelected}
       filters={filters}
       appliedFilters={appliedFilters}

@@ -5,6 +5,8 @@ export const useDebounce = <V>(value: V, delayMs: number = 300) => {
 
   useEffect(
     () => {
+      console.log('useDebounce', value);
+
       const t = setTimeout(() => {
         setDebouncedValue(value);
       }, delayMs);

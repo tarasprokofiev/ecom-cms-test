@@ -83,11 +83,12 @@ export const userQueryValidator = withZod(
   })
 );
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function adminUsersLoader({request}: LoaderFunctionArgs) {
   const {searchParams} = new URL(request.url);
-
+  await sleep(1000);
   const {data} = await userQueryValidator.validate(
     searchParams
   );

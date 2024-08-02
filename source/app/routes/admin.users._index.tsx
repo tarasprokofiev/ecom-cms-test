@@ -22,7 +22,7 @@ export default function AdminUsersIndex() {
         url: EAdminNavigation.usersCreate,
       }}
     >
-      <AdminUsersTable users={data.users} query={data.query}/>
+      <AdminUsersTable users={data.users} query={data.query} pagination={data.pagination}/>
 
       <Card>
         <BlockStack gap="200">

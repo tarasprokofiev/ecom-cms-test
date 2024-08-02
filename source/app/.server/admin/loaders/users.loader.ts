@@ -5,6 +5,7 @@ import {withZod} from '@rvf/zod';
 import {z} from 'zod';
 import {$Enums, Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
+import {IOffsetPaginationInfoDto} from '~/.server/shared/dto/offset-pagination-info.dto';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
 
@@ -83,17 +84,15 @@ export const userQueryValidator = withZod(
   })
 );
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function adminUsersLoader({request}: LoaderFunctionArgs) {
   const {searchParams} = new URL(request.url);
-  await sleep(1000);
   const {data} = await userQueryValidator.validate(
     searchParams
   );
 
-  let take = 15;
+
+  let take = 2;
   let skip = 0;
   let searchQuery;
   let filterRoleQuery;
@@ -147,6 +146,15 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
     orderBy = sortValueToField<UserOrderByWithRelationInput>(data.sort);
   }
 
+  const pagination: IOffsetPaginationInfoDto = {
+    take,
+    skip,
+    hasNext: false,
+    hasPrevious: skip > 0,
+    total: 0,
+    count: 0
+  };
+
   const users = await prisma.user.findMany({
     take,
     skip,
@@ -158,7 +166,18 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
     orderBy
   });
 
-  return json({users: users.map(userMapper), query: data});
+  pagination.count = users.length;
+  pagination.total = await prisma.user.count({
+    where: {
+      ...searchQuery,
+      ...filterRoleQuery,
+      ...filterAccountStatusQuery,
+    }
+  });
+
+  pagination.hasNext = skip + take < pagination.total;
+
+  return json({users: users.map(userMapper), query: data, pagination});
 }
 
 export type TAdminUsersLoaderData = SerializeFrom<typeof adminUsersLoader>;

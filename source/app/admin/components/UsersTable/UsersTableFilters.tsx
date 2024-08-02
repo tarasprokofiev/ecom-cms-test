@@ -4,16 +4,6 @@ import type {EAccountStatus, TAdminUsersLoaderData} from '~/.server/admin/loader
 import {useSearchParams} from '@remix-run/react';
 import {$Enums} from '@prisma/client';
 
-function debounce(callback: (...args: unknown[]) => void, delay = 300) {
-  let time: number;
-  return (...args: unknown[]) => {
-    clearTimeout(time);
-    time = window.setTimeout(() => {
-      callback(...args);
-    }, delay);
-  };
-}
-
 export interface UsersTableFiltersProps {
   query?: TAdminUsersLoaderData['query'];
 }
@@ -67,6 +57,9 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
 
     timerRef.current = window.setTimeout(() => {
       setSearchParams((prev) => {
+        prev.delete('skip');
+        prev.delete('take');
+
         if (value === '') {
           prev.delete('q');
           return prev;
@@ -77,30 +70,6 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
       });
     }, 300);
   }, [setSearchParams]);
-
-  // const [queryValue, setQueryValue] = useState(query?.q || '');
-  // const searchDebouncedValue = useDebounce(queryValue, 300);
-
-  // const handleFiltersQueryChange = useCallback((value: string) => {
-  //
-  //   if ((searchParams.get('q') || '') === value) {
-  //     return;
-  //   }
-  //
-  //   setSearchParams((prev) => {
-  //     if (value === '') {
-  //       prev.delete('q');
-  //       return prev;
-  //     }
-  //
-  //     prev.set('q', value);
-  //     return prev;
-  //   });
-  // }, [setSearchParams]);
-  //
-  // useEffect(() => {
-  //   handleFiltersQueryChange(searchDebouncedValue);
-  // }, [searchDebouncedValue, handleFiltersQueryChange]);
 
   const [role, setRole] = useState<string[] | undefined>(
     query?.role,
@@ -117,6 +86,9 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
     (value: string[]) => {
       setRole(value);
       setSearchParams((prev) => {
+        prev.delete('skip');
+        prev.delete('take');
+
         if (value.length === 0) {
           prev.delete('role');
           return prev;
@@ -133,6 +105,9 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
     (value: EAccountStatus[]) => {
       setAccountStatus(value?.[0]);
       setSearchParams((prev) => {
+        prev.delete('skip');
+        prev.delete('take');
+
         if (value.length === 0) {
           prev.delete('accountStatus');
           return prev;
@@ -154,6 +129,8 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
       prev.delete('q');
       prev.delete('role');
       prev.delete('accountStatus');
+      prev.delete('skip');
+      prev.delete('take');
       return prev;
     });
   }, [setSearchParams, setAccountStatus]);

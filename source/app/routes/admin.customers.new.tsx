@@ -3,11 +3,10 @@ import {Page} from '@shopify/polaris';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {ValidatedForm} from 'remix-validated-form';
 import {ValidatedSubmitButton} from '~/admin/ui/ValidatedSubmitButton/ValidatedSubmitButton';
-import {adminUsersNewAction} from '~/.server/admin/actions/users.new.action';
 import {newFormValidator} from '~/admin/components/customers/NewForm/NewForm.validator';
 import {NewForm} from '~/admin/components/customers/NewForm/NewForm';
 
-export const action = adminUsersNewAction;
+export {action} from '~/.server/admin/actions/customers/new/action';
 
 export default function AdminCustomerNew() {
   const primaryAction = useCallback(() => (

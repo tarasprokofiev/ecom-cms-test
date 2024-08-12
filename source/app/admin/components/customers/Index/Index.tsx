@@ -42,7 +42,7 @@ export const Index: FC<ListProps> = ({customers, query, pagination}) => {
         position={index}
       >
         <IndexTable.Cell>
-          <Link url={`${EAdminNavigation.users}/${id}`}>{firstName} {lastName}</Link>
+          <Link url={`${EAdminNavigation.customers}/${id}`}>{firstName} {lastName}</Link>
         </IndexTable.Cell>
         <IndexTable.Cell>{email}</IndexTable.Cell>
         <IndexTable.Cell>{createdAt}</IndexTable.Cell>

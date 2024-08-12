@@ -1,8 +1,8 @@
-import type {User} from '@prisma/client';
+import type {Customer} from '@prisma/client';
 
 type ExcludedField = 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'
 
-export type TUserDto = Omit<User, ExcludedField> & {
+export type TCustomerDto = Omit<Customer, ExcludedField> & {
   id: string;
   createdAt: string;
   updatedAt: string;

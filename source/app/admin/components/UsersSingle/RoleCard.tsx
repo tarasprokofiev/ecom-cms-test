@@ -1,5 +1,6 @@
 import {
   BlockStack,
+  Box,
   Button,
   Card,
   FormLayout,
@@ -17,13 +18,15 @@ import {$Enums} from '@prisma/client';
 import {ValidatedSelect} from '~/admin/ui/ValidatedSelect/ValidatedSelect';
 import {usersRoleFormValidator} from '~/admin/components/UsersSingle/UsersRoleForm.validator';
 import {ValidatedSubmitButton} from '~/admin/ui/ValidatedSubmitButton/ValidatedSubmitButton';
+import {ValidatedAction} from '~/admin/ui/ValidatedAction/ValidatedAction';
+import {EAdminUserAction} from '~/admin/constants/action.constant';
 
 export type RoleCardProps = {
   user: TUserDto;
 }
 
 export const RoleCard: FC<RoleCardProps> = (props) => {
-  const {user: {role, id}} = props;
+  const {user: {role}} = props;
   const [active, setActive] = useState(false);
 
   const toggleActive = useCallback(() => setActive((active) => !active), []);
@@ -67,6 +70,9 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
         title="Change role"
       >
         <ValidatedForm validator={usersRoleFormValidator} method="post" onSubmit={toggleActive}>
+          <Box padding="200" paddingBlockEnd="0">
+            <ValidatedAction action={EAdminUserAction.updateRole}/>
+          </Box>
           <Modal.Section>
             <FormLayout>
               <ValidatedSelect

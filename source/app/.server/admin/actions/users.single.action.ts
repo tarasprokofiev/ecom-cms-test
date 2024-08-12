@@ -1,12 +1,12 @@
 import {ActionFunctionArgs, redirect} from '@remix-run/node';
 import {authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
-import {validationError} from 'remix-validated-form';
 import {prisma} from '~/.server/shared/utils/prisma.util';
-import {usersRoleFormValidator} from '~/admin/components/UsersSingle/UsersRoleForm.validator';
-import {$Enums} from '@prisma/client';
+import {EAdminUserAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
+import {adminUsersSingleRoleAction} from '~/.server/admin/actions/users.single.role.action';
+import {validationError} from 'remix-validated-form';
 
-export async function adminUsersRoleAction({request, params}: ActionFunctionArgs) {
+export async function adminUsersSingleAction({request, params}: ActionFunctionArgs) {
   await authenticator.isAuthenticated(request, {
     failureRedirect: EAdminNavigation.authLogin,
   });
@@ -27,26 +27,16 @@ export async function adminUsersRoleAction({request, params}: ActionFunctionArgs
   }
 
   const formData = await request.formData();
-
-  // validate form data
-  const data = await usersRoleFormValidator.validate(
-    formData
-  );
-
-  if (data.error) {
-    return validationError(data.error);
+  switch (formData.get(FORM_ACTION_FIELD)) {
+    case EAdminUserAction.updateRole:
+      return adminUsersSingleRoleAction({id, formData});
+    case EAdminUserAction.deleteUser:
+      throw new Error('Not implemented');
   }
 
-  const {role} = data.data;
-
-  // update user
-  await prisma.user.update({
-    where: {id: user.id},
-    data: {
-      role: role as $Enums.AdminRole
+  return validationError({
+    fieldErrors: {
+      [FORM_ACTION_FIELD]: 'Invalid action'
     }
   });
-
-  // redirect to user page
-  return redirect(`${EAdminNavigation.users}/${user.id}`);
 }

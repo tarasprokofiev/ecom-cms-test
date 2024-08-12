@@ -4,11 +4,11 @@ import {Page} from '@shopify/polaris';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {UsersSingle} from '~/admin/components/UsersSingle/UsersSingle';
 import {adminUsersSingleLoader} from '~/.server/admin/loaders/users.single.loader';
-import {adminUsersRoleAction} from '~/.server/admin/actions/users.role.action';
+import {adminUsersSingleAction} from '~/.server/admin/actions/users.single.action';
 
 export const loader = adminUsersSingleLoader;
 
-export const action = adminUsersRoleAction;
+export const action = adminUsersSingleAction;
 
 export default function AdminUsersSingle() {
   const {user} = useLoaderData<typeof loader>();

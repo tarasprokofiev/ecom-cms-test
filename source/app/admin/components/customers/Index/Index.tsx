@@ -7,6 +7,7 @@ import {IOffsetPaginationInfoDto} from '~/.server/shared/dto/offset-pagination-i
 import {usePagination} from '~/admin/hooks/usePagination';
 import {TCustomerDto} from '~/.server/admin/dto/customer.dto';
 import type {TAdminCustomersLoaderData} from '~/.server/admin/loaders/customers/index/loader';
+import {Filters} from './Filters';
 
 export interface ListProps {
   customers: TCustomerDto[];
@@ -41,9 +42,8 @@ export const Index: FC<ListProps> = ({customers, query, pagination}) => {
         position={index}
       >
         <IndexTable.Cell>
-          <Link url={`${EAdminNavigation.users}/${id}`}>{email}</Link>
+          <Link url={`${EAdminNavigation.users}/${id}`}>{firstName} {lastName}</Link>
         </IndexTable.Cell>
-        <IndexTable.Cell>{firstName} {lastName}</IndexTable.Cell>
         <IndexTable.Cell>{email}</IndexTable.Cell>
         <IndexTable.Cell>{createdAt}</IndexTable.Cell>
         <IndexTable.Cell>{updatedAt}</IndexTable.Cell>
@@ -54,7 +54,7 @@ export const Index: FC<ListProps> = ({customers, query, pagination}) => {
 
   return (
     <Card padding="0">
-      {/*<Filters query={query}/>*/}
+      <Filters query={query}/>
       <IndexTable
         resourceName={resourceName}
         itemCount={customers.length}

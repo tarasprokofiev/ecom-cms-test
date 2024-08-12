@@ -15,8 +15,6 @@ export enum EAccountStatus {
 }
 
 export enum ECustomersSortVariant {
-  id_asc = 'id_asc',
-  id_desc = 'id_desc',
   createdAt_asc = 'createdAt_asc',
   createdAt_desc = 'createdAt_desc',
   updatedAt_asc = 'updatedAt_asc',
@@ -54,7 +52,7 @@ export async function loader({request}: LoaderFunctionArgs) {
   let skip = 0;
   let searchQuery;
   let filterAccountStatusQuery;
-  let orderBy: CustomerOrderByWithRelationInput = {id: 'desc' as const};
+  let orderBy: CustomerOrderByWithRelationInput = {createdAt: 'desc' as const};
 
   if (data?.take) {
     take = data.take;

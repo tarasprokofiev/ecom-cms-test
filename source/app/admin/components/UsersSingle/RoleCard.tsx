@@ -1,25 +1,8 @@
-import {
-  BlockStack,
-  Box,
-  Button,
-  Card,
-  FormLayout,
-  InlineGrid,
-  InlineStack,
-  Modal,
-  SelectProps,
-  Text
-} from '@shopify/polaris';
+import {BlockStack, Button, Card, InlineGrid, Modal, Text} from '@shopify/polaris';
 import {EditIcon} from '@shopify/polaris-icons';
-import React, {FC, useCallback, useMemo, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {TUserDto} from '~/.server/admin/dto/user.dto';
-import {ValidatedForm} from 'remix-validated-form';
-import {$Enums} from '@prisma/client';
-import {ValidatedSelect} from '~/admin/ui/ValidatedSelect/ValidatedSelect';
-import {usersRoleFormValidator} from '~/admin/components/UsersSingle/UsersRoleForm.validator';
-import {ValidatedSubmitButton} from '~/admin/ui/ValidatedSubmitButton/ValidatedSubmitButton';
-import {ValidatedAction} from '~/admin/ui/ValidatedAction/ValidatedAction';
-import {EAdminUserAction} from '~/admin/constants/action.constant';
+import {UsersRoleForm} from '~/admin/components/UsersSingle/UsersRoleForm';
 
 export type RoleCardProps = {
   user: TUserDto;
@@ -30,21 +13,6 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
   const [active, setActive] = useState(false);
 
   const toggleActive = useCallback(() => setActive((active) => !active), []);
-
-  const roleOptions: SelectProps['options'] = useMemo(() => ([
-    {
-      label: 'Select role',
-      value: '',
-    },
-    {
-      label: 'Admin',
-      value: $Enums.AdminRole.ADMIN,
-    },
-    {
-      label: 'Staff',
-      value: $Enums.AdminRole.STUFF,
-    }
-  ]), []);
 
   return (
     <Card>
@@ -69,27 +37,7 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
         onClose={toggleActive}
         title="Change role"
       >
-        <ValidatedForm validator={usersRoleFormValidator} method="post" onSubmit={toggleActive}>
-          <Box padding="200" paddingBlockEnd="0">
-            <ValidatedAction action={EAdminUserAction.updateRole}/>
-          </Box>
-          <Modal.Section>
-            <FormLayout>
-              <ValidatedSelect
-                label={null}
-                name="role"
-                options={roleOptions}
-                defaultValue={role}
-              />
-            </FormLayout>
-          </Modal.Section>
-          <Modal.Section>
-            <InlineStack direction="row-reverse" align="end" gap="200">
-              <ValidatedSubmitButton text={'Save'} variant="primary"/>
-              <Button onClick={toggleActive}>Cancel</Button>
-            </InlineStack>
-          </Modal.Section>
-        </ValidatedForm>
+        <UsersRoleForm role={role} toggleActive={toggleActive}/>
       </Modal>
     </Card>
   );

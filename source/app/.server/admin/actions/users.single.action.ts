@@ -5,6 +5,7 @@ import {prisma} from '~/.server/shared/utils/prisma.util';
 import {EAdminUserAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
 import {adminUsersSingleRoleAction} from '~/.server/admin/actions/users.single.role.action';
 import {validationError} from 'remix-validated-form';
+import {adminUsersSingleDeleteAction} from '~/.server/admin/actions/users.single.delete.action';
 
 export async function adminUsersSingleAction({request, params}: ActionFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -31,7 +32,7 @@ export async function adminUsersSingleAction({request, params}: ActionFunctionAr
     case EAdminUserAction.updateRole:
       return adminUsersSingleRoleAction({id, formData});
     case EAdminUserAction.deleteUser:
-      throw new Error('Not implemented');
+      return adminUsersSingleDeleteAction({id});
   }
 
   return validationError({

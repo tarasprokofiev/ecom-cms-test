@@ -11,7 +11,18 @@ export const firstNameRule = z.string().trim().min(1, {message: 'First Name is r
 export const lastNameRule = z.string().trim().min(1, {message: 'Last Name is required'});
 export const passwordRule = z.string().trim().min(8, {message: 'Password must be greater than 8'});
 export const passwordConfirmRule = z.string();
-export const phone = z.string();
+export const phoneRule = z.string();
+export const addressRule = z.object({
+  country: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  company: z.string().optional(),
+  address: z.string(),
+  apartment: z.string().optional(),
+  city: z.string(),
+  postalCode: z.string(),
+  phone: z.string(),
+});
 
 export const newFormValidator = withZod(
   z.object({
@@ -20,7 +31,8 @@ export const newFormValidator = withZod(
     lastName: lastNameRule,
     password: passwordRule,
     passwordConfirm: passwordConfirmRule,
-    phone: phone,
+    phone: phoneRule,
+    address: addressRule,
   })
     .refine((data) => data.password === data.passwordConfirm, {
       message: 'Passwords don\'t match',

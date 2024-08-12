@@ -1,17 +1,21 @@
-import {BlockStack, Layout} from '@shopify/polaris';
+import {BlockStack, Box, Layout} from '@shopify/polaris';
 import React from 'react';
 import {PrimaryInfoCard} from './PrimaryInfoCard';
 import {SecurityCard} from './SecurityCard';
+import {AddressCard} from '~/admin/components/customers/NewForm/AddressCard';
 
 export const NewForm = () => {
   return (
-    <Layout>
-      <Layout.Section>
-        <BlockStack gap="500">
-          <PrimaryInfoCard/>
-          <SecurityCard/>
-        </BlockStack>
-      </Layout.Section>
-    </Layout>
+    <Box paddingBlockEnd="500">
+      <Layout>
+        <Layout.Section>
+          <BlockStack gap="500">
+            <PrimaryInfoCard/>
+            <SecurityCard/>
+            <AddressCard/>
+          </BlockStack>
+        </Layout.Section>
+      </Layout>
+    </Box>
   );
 };

@@ -20,7 +20,7 @@ export async function action({request}: ActionFunctionArgs) {
     return validationError(data.error);
   }
 
-  const {email, password, lastName, firstName, phone} = data.data;
+  const {email, password, lastName, firstName, phone, address} = data.data;
 
   // check unique email
   const exist = await prisma.customer.findFirst({where: {email}});
@@ -40,6 +40,14 @@ export async function action({request}: ActionFunctionArgs) {
       firstName,
       lastName,
       phone,
+    }
+  });
+
+  // create new Address
+  await prisma.customerAddress.create({
+    data: {
+      ...address,
+      customerId: newCustomer.id,
     }
   });
 

@@ -32,7 +32,7 @@ export default function AdminCustomersSingle() {
     <Page
       title={`${customer.firstName} ${customer.lastName}`}
       backAction={{
-        url: EAdminNavigation.users
+        url: EAdminNavigation.customers
       }}
       secondaryActions={secondaryActions}
     >

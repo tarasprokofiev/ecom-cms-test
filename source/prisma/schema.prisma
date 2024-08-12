@@ -23,6 +23,53 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  @@index([createdAt], name: "UserCreatedAtIndex")
+  @@index([updatedAt], name: "UserUpdatedAtIndex")
+  @@index([deletedAt], name: "UserDeletedAtIndex")
+  @@index([role], name: "UserRoleIndex")
+  @@index([fullName], name: "UserFullNameIndex")
+}
+
+model Customer {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  password  String
+  phone     String?
+  note      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  addresses CustomerAddress[]
+
+  @@index([createdAt], name: "CustomerCreatedAtIndex")
+  @@index([updatedAt], name: "CustomerUpdatedAtIndex")
+  @@index([deletedAt], name: "CustomerDeletedAtIndex")
+  @@index([firstName, lastName, email, phone], name: "CustomerSearchIndex")
+}
+
+model CustomerAddress {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  country    String
+  firstName  String
+  lastName   String
+  company    String?
+  address    String
+  apartment  String?
+  city       String
+  postalCode String
+  phone      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId], name: "CustomerAddressCustomerIdIndex")
+  @@index([firstName, lastName, company, address, phone], name: "CustomerAddressSearchIndex")
 }
 
 // Enums

@@ -6,6 +6,6 @@ import {EAdminUserAction, FORM_ACTION_FIELD} from '~/admin/constants/action.cons
 export const usersRoleFormValidator = withZod(
   z.object({
     role: roleRule,
-    [FORM_ACTION_FIELD]: z.nativeEnum(EAdminUserAction, {message: 'Invalid action'}),
+    [FORM_ACTION_FIELD]: z.literal(EAdminUserAction.updateRole),
   })
 );

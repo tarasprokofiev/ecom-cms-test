@@ -3,9 +3,10 @@ import {useLoaderData} from '@remix-run/react';
 import {Page} from '@shopify/polaris';
 import {PlusIcon} from '@shopify/polaris-icons';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
-import type {TAdminCustomersLoader} from '~/.server/admin/loaders/customers/list/loader';
+import type {TAdminCustomersLoader} from '~/.server/admin/loaders/customers/index/loader';
+import {Index} from '~/admin/components/customers/Index/Index';
 
-export {loader} from '~/.server/admin/loaders/customers/list/loader';
+export {loader} from '~/.server/admin/loaders/customers/index/loader';
 
 
 export default function AdminCustomersIndex() {
@@ -24,7 +25,7 @@ export default function AdminCustomersIndex() {
         url: EAdminNavigation.customersCreate,
       }}
     >
-      {/*<AdminUsersTable users={data.users} query={data.query} pagination={data.pagination}/>*/}
+      <Index customers={data.customers} query={data.query} pagination={data.pagination}/>
     </Page>
   );
 }

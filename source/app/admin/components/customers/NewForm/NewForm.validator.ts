@@ -14,8 +14,8 @@ export const passwordConfirmRule = z.string();
 export const phoneRule = z.string();
 export const addressRule = z.object({
   country: z.string(),
-  firstName: z.string(),
-  lastName: z.string(),
+  firstName: firstNameRule,
+  lastName: lastNameRule,
   company: z.string().optional(),
   address: z.string(),
   apartment: z.string().optional(),

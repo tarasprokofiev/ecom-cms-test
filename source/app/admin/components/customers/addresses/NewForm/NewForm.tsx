@@ -1,8 +1,6 @@
 import {BlockStack, Box, Layout} from '@shopify/polaris';
 import React from 'react';
-import {PrimaryInfoCard} from './PrimaryInfoCard';
-import {SecurityCard} from './SecurityCard';
-import {AddressCard} from './AddressCard';
+import {AddressCard} from '~/admin/components/customers/NewForm/AddressCard';
 
 export const NewForm = () => {
   return (
@@ -10,8 +8,6 @@ export const NewForm = () => {
       <Layout>
         <Layout.Section>
           <BlockStack gap="500">
-            <PrimaryInfoCard/>
-            <SecurityCard/>
             <AddressCard/>
           </BlockStack>
         </Layout.Section>

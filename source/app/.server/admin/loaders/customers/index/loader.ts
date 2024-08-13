@@ -69,6 +69,19 @@ export async function loader({request}: LoaderFunctionArgs) {
         {firstName: {contains: data?.q, mode: 'insensitive' as const}},
         {lastName: {contains: data?.q, mode: 'insensitive' as const}},
         {phone: {contains: data?.q, mode: 'insensitive' as const}},
+        {
+          addresses: {
+            some: {
+              OR: [
+                {firstName: {contains: data?.q, mode: 'insensitive' as const}},
+                {lastName: {contains: data?.q, mode: 'insensitive' as const}},
+                {address: {contains: data?.q, mode: 'insensitive' as const}},
+                {phone: {contains: data?.q, mode: 'insensitive' as const}},
+                {company: {contains: data?.q, mode: 'insensitive' as const}}
+              ]
+            }
+          }
+        }
       ]
     };
   }
@@ -101,6 +114,9 @@ export async function loader({request}: LoaderFunctionArgs) {
   };
 
   const customers = await prisma.customer.findMany({
+    include: {
+      addresses: true
+    },
     take,
     skip,
     where: {

@@ -5,6 +5,7 @@ import {prisma} from '~/.server/shared/utils/prisma.util';
 import {EAdminCustomerAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
 import {validationError} from 'remix-validated-form';
 import {deleteAddress} from '~/.server/admin/actions/customers/single/delete-address';
+import {deleteCustomer} from '~/.server/admin/actions/customers/single/delete-customer';
 
 export async function action({request, params}: ActionFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -31,7 +32,7 @@ export async function action({request, params}: ActionFunctionArgs) {
     case EAdminCustomerAction.deleteAddress:
       return deleteAddress({id, formData});
     case EAdminCustomerAction.deleteCustomer:
-      throw new Error('Not implemented');
+      return deleteCustomer({id});
   }
 
   return validationError({

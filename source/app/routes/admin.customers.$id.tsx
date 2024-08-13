@@ -4,6 +4,7 @@ import {Modal, Page} from '@shopify/polaris';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {TAdminCustomersSingleLoader} from '~/.server/admin/loaders/customers/single/loader';
 import {Single} from '~/admin/components/customers/Single/Single';
+import {CustomerDeleteForm} from '~/admin/components/customers/Single/CustomerDeleteForm';
 
 export {loader} from '~/.server/admin/loaders/customers/single/loader';
 export {action} from '~/.server/admin/actions/customers/single/action';
@@ -41,7 +42,7 @@ export default function AdminCustomersSingle() {
         onClose={toggleActive}
         title="Delete customer"
       >
-        {/*<UsersDeleteForm toggleActive={toggleActive} fullName={user.fullName}/>*/}
+        <CustomerDeleteForm toggleActive={toggleActive} customer={customer}/>
       </Modal>
     </Page>
   );

@@ -3,6 +3,7 @@ import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {PlusIcon} from '@shopify/polaris-icons';
 import React, {FC, useCallback, useMemo, useState} from 'react';
 import type {TCustomerDto} from '~/.server/admin/dto/customer.dto';
+import {AddressDeleteForm} from '~/admin/components/customers/Single/AddressDeleteForm';
 
 export type AddressesCardProps = {
   customer: TCustomerDto;
@@ -10,6 +11,7 @@ export type AddressesCardProps = {
 
 export const AddressesCard: FC<AddressesCardProps> = ({customer}) => {
   const [deletedId, setDeletedId] = useState<string | null>(null);
+  const deletedAddress = customer.addresses.find(({id}) => id === deletedId);
 
   const resourceName = useMemo(() => ({singular: 'address', plural: 'addresses'}), []);
 
@@ -70,7 +72,7 @@ export const AddressesCard: FC<AddressesCardProps> = ({customer}) => {
 
       </ResourceItem>
     );
-  }, []);
+  }, [customer.id]);
 
   return (
     <Card padding="0">
@@ -93,11 +95,11 @@ export const AddressesCard: FC<AddressesCardProps> = ({customer}) => {
       />
       <Modal
         size="small"
-        open={deletedId !== null}
+        open={!!deletedAddress}
         onClose={() => setDeletedId(null)}
         title={`Delete address id: ${deletedId}`}
       >
-        {/*<UsersDeleteForm toggleActive={toggleActive} fullName={user.fullName}/>*/}
+        {deletedAddress && <AddressDeleteForm toggleActive={() => setDeletedId(null)} address={deletedAddress}/>}
       </Modal>
     </Card>
   );

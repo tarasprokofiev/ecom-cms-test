@@ -7,12 +7,12 @@ import {EAdminCustomerAction} from '~/admin/constants/action.constant';
 import {addressDeleteFormValidator} from '~/admin/components/customers/Single/AddressDeleteForm.validator';
 import type {TCustomerAddressDto} from '~/.server/admin/dto/customer.dto';
 
-export type UsersDeleteFormProps = {
+export type Props = {
   address: TCustomerAddressDto;
   toggleActive: () => void;
 }
 
-export const AddressDeleteForm: FC<UsersDeleteFormProps> = (props) => {
+export const AddressDeleteForm: FC<Props> = (props) => {
   const {address: customerAddress, toggleActive} = props;
   const {id, address, company, country, city, apartment, postalCode, firstName, phone, lastName} = customerAddress;
 

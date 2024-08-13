@@ -17,7 +17,7 @@ export async function action({request, params}: ActionFunctionArgs) {
     return redirect(EAdminNavigation.customers);
   }
 
-  // get user
+  // get customer
   const customer = await prisma.customer.findFirst({
     where: {id: Number(id)}
   });

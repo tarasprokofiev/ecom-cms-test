@@ -4,7 +4,7 @@ import {EAdminCustomerAction, FORM_ACTION_FIELD} from '~/admin/constants/action.
 
 export const addressDeleteFormValidator = withZod(
   z.object({
-    addressId: z.string().trim(),
+    addressId: z.coerce.number().int().positive(),
     [FORM_ACTION_FIELD]: z.literal(EAdminCustomerAction.deleteAddress),
   })
 );

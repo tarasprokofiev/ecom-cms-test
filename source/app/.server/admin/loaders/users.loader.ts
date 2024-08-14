@@ -11,6 +11,7 @@ import {
   queryToPagination,
   queryToSearch,
   queryToSort,
+  requestToSearchParams,
   sortValueToField
 } from '~/.server/admin/utils/query.util';
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
@@ -49,7 +50,7 @@ export const userQueryValidator = withZod(
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function adminUsersLoader({request}: LoaderFunctionArgs) {
-  const {searchParams} = new URL(request.url);
+  const searchParams = requestToSearchParams(request);
   const {data} = await userQueryValidator.validate(
     searchParams
   );

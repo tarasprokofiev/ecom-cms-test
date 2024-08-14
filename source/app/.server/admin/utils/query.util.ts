@@ -86,3 +86,7 @@ export const makeQuery = <T extends TQueryFilter>(search: IQueryDto<T>['q'], sor
     filters
   };
 };
+
+export const requestToSearchParams = (request: Request): URLSearchParams => {
+  return new URL(request.url).searchParams;
+};

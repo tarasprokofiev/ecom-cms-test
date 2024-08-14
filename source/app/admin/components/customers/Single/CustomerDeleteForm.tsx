@@ -2,8 +2,6 @@ import {Box, Button, Divider, InlineStack, Text} from '@shopify/polaris';
 import React, {FC} from 'react';
 import {ValidatedForm} from 'remix-validated-form';
 import {ValidatedSubmitButton} from '~/admin/ui/ValidatedSubmitButton/ValidatedSubmitButton';
-import {ValidatedAction} from '~/admin/ui/ValidatedAction/ValidatedAction';
-import {EAdminCustomerAction} from '~/admin/constants/action.constant';
 import type {TCustomerDto} from '~/.server/admin/dto/customer.dto';
 import {customerDeleteFormValidator} from '~/admin/components/customers/Single/CustomerDeleteForm.validator';
 
@@ -18,10 +16,6 @@ export const CustomerDeleteForm: FC<Props> = (props) => {
 
   return (
     <ValidatedForm validator={customerDeleteFormValidator} method="post" onSubmit={toggleActive}>
-      <Box padding="200" paddingBlockEnd="0">
-        <ValidatedAction action={EAdminCustomerAction.deleteCustomer}/>
-      </Box>
-
       <Box padding="400" paddingBlockStart="200">
         <Text as="p">
           Are you sure you want to delete {firstName} {lastName}?

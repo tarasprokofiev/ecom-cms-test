@@ -2,10 +2,6 @@ import {ActionFunctionArgs, redirect} from '@remix-run/node';
 import {authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {prisma} from '~/.server/shared/utils/prisma.util';
-import {EAdminCustomerAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
-import {validationError} from 'remix-validated-form';
-import {deleteAddress} from '~/.server/admin/actions/customers/single/delete-address';
-import {deleteCustomer} from '~/.server/admin/actions/customers/single/delete-customer';
 
 export async function action({request, params}: ActionFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -27,17 +23,14 @@ export async function action({request, params}: ActionFunctionArgs) {
     return redirect(EAdminNavigation.customers);
   }
 
-  const formData = await request.formData();
-  switch (formData.get(FORM_ACTION_FIELD)) {
-    case EAdminCustomerAction.deleteAddress:
-      return deleteAddress({id, formData});
-    case EAdminCustomerAction.deleteCustomer:
-      return deleteCustomer({id});
-  }
-
-  return validationError({
-    fieldErrors: {
-      [FORM_ACTION_FIELD]: 'Invalid action'
+  // update customer
+  await prisma.customer.update({
+    where: {id: Number(id)},
+    data: {
+      deletedAt: new Date()
     }
   });
+
+  // redirect to user page
+  return redirect(`${EAdminNavigation.customers}/${id}`);
 }

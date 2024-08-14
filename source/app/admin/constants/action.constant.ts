@@ -6,6 +6,7 @@ export enum EAdminUserAction {
 }
 
 export enum EAdminCustomerAction {
+  editAddress = 'edit_address',
   deleteAddress = 'delete_address',
   deleteCustomer = 'delete_customer',
 }

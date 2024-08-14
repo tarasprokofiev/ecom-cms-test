@@ -3,7 +3,9 @@ import {authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {validationError} from 'remix-validated-form';
 import {prisma} from '~/.server/shared/utils/prisma.util';
-import {editFormValidator} from '~/admin/components/customers/addresses/EditForm/EditForm.validator';
+import {EAdminCustomerAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
+import {deleteAddress} from '~/.server/admin/actions/customers/addresses/edit/delete-address';
+import {editAddress} from '~/.server/admin/actions/customers/addresses/edit/edit-address';
 
 export async function action({request, params}: ActionFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -25,26 +27,18 @@ export async function action({request, params}: ActionFunctionArgs) {
     return redirect(EAdminNavigation.customers);
   }
 
-  // validate form data
-  const data = await editFormValidator.validate(
-    await request.formData()
-  );
-
-  if (data.error) {
-    return validationError(data.error);
+  const formData = await request.formData();
+  switch (formData.get(FORM_ACTION_FIELD)) {
+    case EAdminCustomerAction.deleteAddress:
+      return deleteAddress({customerAddress});
+    case EAdminCustomerAction.editAddress:
+      return editAddress({customerAddress, formData});
   }
 
-  const {address} = data.data;
-
-  // create new Address
-  await prisma.customerAddress.update({
-    where: {
-      id: customerAddress.id
-    },
-    data: {
-      ...address,
+  return validationError({
+    fieldErrors: {
+      [FORM_ACTION_FIELD]: 'Invalid action'
     }
   });
 
-  return redirect(`${EAdminNavigation.customers}/${id}`);
 }

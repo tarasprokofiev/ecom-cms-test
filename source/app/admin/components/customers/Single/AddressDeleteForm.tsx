@@ -14,12 +14,10 @@ export type Props = {
 
 export const AddressDeleteForm: FC<Props> = (props) => {
   const {address: customerAddress, toggleActive} = props;
-  const {id, address, company, country, city, apartment, postalCode, firstName, phone, lastName} = customerAddress;
+  const {address, company, country, city, apartment, postalCode, firstName, phone, lastName} = customerAddress;
 
   return (
     <ValidatedForm validator={addressDeleteFormValidator} method="post" onSubmit={toggleActive}>
-      <input type="hidden" name="addressId" value={id}/>
-
       <Box padding="200" paddingBlockEnd="0">
         <ValidatedAction action={EAdminCustomerAction.deleteAddress}/>
       </Box>

@@ -4,9 +4,8 @@ import {withZod} from '@rvf/zod';
 import {z} from 'zod';
 import {Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
-import {IOffsetPaginationInfoDto} from '~/.server/shared/dto/offset-pagination-info.dto';
 import {customerMapper} from '~/.server/admin/mappers/customer.mapper';
-import {sortValueToField} from '~/.server/admin/utils/query.util';
+import {makePagination, sortValueToField} from '~/.server/admin/utils/query.util';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
 
@@ -98,14 +97,7 @@ export async function loader({request}: LoaderFunctionArgs) {
     orderBy = sortValueToField<CustomerOrderByWithRelationInput>(data.sort);
   }
 
-  const pagination: IOffsetPaginationInfoDto = {
-    take,
-    skip,
-    hasNext: false,
-    hasPrevious: skip > 0,
-    total: 0,
-    count: 0
-  };
+  const pagination = makePagination(take, skip);
 
   const customers = await prisma.customer.findMany({
     include: {

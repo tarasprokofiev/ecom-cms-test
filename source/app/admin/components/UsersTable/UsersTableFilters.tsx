@@ -72,11 +72,11 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
   }, [setSearchParams]);
 
   const [role, setRole] = useState<string[] | undefined>(
-    query?.role,
+    query?.filters?.role,
   );
 
   const [accountStatus, setAccountStatus] = useState<EAccountStatus | undefined>(
-    query?.accountStatus,
+    query?.filters?.accountStatus,
   );
 
   const {mode, setMode} = useSetIndexFiltersMode();

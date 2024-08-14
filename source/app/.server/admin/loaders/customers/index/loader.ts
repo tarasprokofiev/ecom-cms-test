@@ -5,7 +5,13 @@ import {z} from 'zod';
 import {Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {customerMapper} from '~/.server/admin/mappers/customer.mapper';
-import {queryToPagination, queryToSearch, sortValueToField} from '~/.server/admin/utils/query.util';
+import {
+  makeQuery,
+  queryToPagination,
+  queryToSearch,
+  queryToSort,
+  sortValueToField
+} from '~/.server/admin/utils/query.util';
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
@@ -26,7 +32,6 @@ export enum ECustomersSortVariant {
 
 export const customerQueryValidator = withZod(
   z.object({
-    sort: z.nativeEnum(ECustomersSortVariant).optional(),
     accountStatus: z.nativeEnum(EAccountStatus).optional(),
   })
 );
@@ -39,10 +44,11 @@ export async function loader({request}: LoaderFunctionArgs) {
   );
   const search = await queryToSearch(searchParams);
   const pagination = await queryToPagination(searchParams);
+  const sort = await queryToSort(searchParams, ECustomersSortVariant, ECustomersSortVariant.createdAt_desc);
+  const orderBy = sortValueToField<CustomerOrderByWithRelationInput>(sort);
 
   let searchQuery;
   let filterAccountStatusQuery;
-  let orderBy: CustomerOrderByWithRelationInput = {createdAt: 'desc' as const};
 
   if (search) {
     searchQuery = {
@@ -82,10 +88,6 @@ export async function loader({request}: LoaderFunctionArgs) {
     };
   }
 
-  if (data?.sort) {
-    orderBy = sortValueToField<CustomerOrderByWithRelationInput>(data.sort);
-  }
-
 
   const customers = await prisma.customer.findMany({
     include: {
@@ -110,7 +112,7 @@ export async function loader({request}: LoaderFunctionArgs) {
 
   pagination.hasNext = pagination.skip + pagination.take < pagination.total;
 
-  return json({customers: customers.map(customerMapper), query: data, pagination});
+  return json({customers: customers.map(customerMapper), query: makeQuery(search, sort, data), pagination});
 }
 
 export type TAdminCustomersLoader = typeof loader;

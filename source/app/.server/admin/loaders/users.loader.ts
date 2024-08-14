@@ -5,7 +5,13 @@ import {withZod} from '@rvf/zod';
 import {z} from 'zod';
 import {$Enums, Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
-import {queryToPagination, queryToSearch, sortValueToField} from '~/.server/admin/utils/query.util';
+import {
+  makeQuery,
+  queryToPagination,
+  queryToSearch,
+  queryToSort,
+  sortValueToField
+} from '~/.server/admin/utils/query.util';
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
@@ -37,7 +43,6 @@ export const userQueryValidator = withZod(
   z.object({
     role: z.preprocess((val) => String(val).split(','), z.nativeEnum($Enums.AdminRole).array()).optional(),
     accountStatus: z.nativeEnum(EAccountStatus).optional(),
-    sort: z.nativeEnum(EUsersSortVariant).optional()
   })
 );
 
@@ -49,11 +54,12 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
   );
   const search = await queryToSearch(searchParams);
   const pagination = await queryToPagination(searchParams);
+  const sort = await queryToSort(searchParams, EUsersSortVariant, EUsersSortVariant.id_desc);
+  const orderBy = sortValueToField<UserOrderByWithRelationInput>(sort);
 
   let searchQuery;
   let filterRoleQuery;
   let filterAccountStatusQuery;
-  let orderBy: UserOrderByWithRelationInput = {id: 'desc' as const};
 
   if (search) {
     searchQuery = {
@@ -86,10 +92,6 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
     };
   }
 
-  if (data?.sort) {
-    orderBy = sortValueToField<UserOrderByWithRelationInput>(data.sort);
-  }
-
   const users = await prisma.user.findMany({
     take: pagination.take,
     skip: pagination.skip,
@@ -112,7 +114,7 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
 
   pagination.hasNext = pagination.skip + pagination.take < pagination.total;
 
-  return json({users: users.map(userMapper), query: data, pagination});
+  return json({users: users.map(userMapper), query: makeQuery(search, sort, data), pagination});
 }
 
 export type TAdminUsersLoaderData = SerializeFrom<typeof adminUsersLoader>;

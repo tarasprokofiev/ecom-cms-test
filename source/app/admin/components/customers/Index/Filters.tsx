@@ -64,7 +64,7 @@ export const Filters: FC<FiltersProps> = ({query}) => {
   }, [setSearchParams]);
 
   const [accountStatus, setAccountStatus] = useState<EAccountStatus | undefined>(
-    query?.accountStatus,
+    query?.filters?.accountStatus,
   );
 
   const {mode, setMode} = useSetIndexFiltersMode();

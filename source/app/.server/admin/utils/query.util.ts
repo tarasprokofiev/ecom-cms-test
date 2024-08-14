@@ -1,6 +1,7 @@
 import {IOffsetPaginationInfoDto} from '~/.server/shared/dto/offset-pagination-info.dto';
 import {withZod} from '@rvf/zod';
-import {z} from 'zod';
+import {EnumLike, z} from 'zod';
+import {IQueryDto, TQueryFilter} from '~/.server/shared/dto/query.dto';
 
 export const sortValueToField = <O extends object>(value: string) => {
   const [field, order] = value.split('_');
@@ -58,4 +59,26 @@ export const queryToSearch = async (searchParams: URLSearchParams): Promise<stri
   );
 
   return data?.q;
+};
+
+export const queryToSort = async <T extends EnumLike>(searchParams: URLSearchParams, sortEnum: T, defaultSort: keyof T): Promise<keyof T> => {
+  const queryValidator = withZod(
+    z.object({
+      sort: z.nativeEnum(sortEnum).optional(),
+    })
+  );
+
+  const {data} = await queryValidator.validate(
+    searchParams
+  );
+
+  return (data?.sort || defaultSort) as keyof T;
+};
+
+export const makeQuery = <T extends TQueryFilter>(search: IQueryDto<T>['q'], sort: IQueryDto<T>['sort'], filters?: T): IQueryDto<T> => {
+  return {
+    q: search,
+    sort,
+    filters
+  };
 };

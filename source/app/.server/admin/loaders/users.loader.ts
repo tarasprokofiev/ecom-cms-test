@@ -6,6 +6,7 @@ import {z} from 'zod';
 import {$Enums, Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {
+  hasNextCalculate,
   makeQuery,
   queryToPagination,
   queryToSearch,
@@ -112,7 +113,7 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
     }
   });
 
-  pagination.hasNext = pagination.skip + pagination.take < pagination.total;
+  pagination.hasNext = hasNextCalculate(pagination);
 
   return json({users: users.map(userMapper), query: makeQuery(search, sort, data), pagination});
 }

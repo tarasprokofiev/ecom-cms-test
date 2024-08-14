@@ -21,6 +21,10 @@ export const makePagination = (take: number, skip: number): IOffsetPaginationInf
   };
 };
 
+export const hasNextCalculate = (pagination: IOffsetPaginationInfoDto): boolean => {
+  return pagination.skip + pagination.take < pagination.total;
+};
+
 export const queryToPagination = async (searchParams: URLSearchParams, limit: number = 15, defaultTake = 5): Promise<IOffsetPaginationInfoDto> => {
   let take = defaultTake;
   let skip = 0;

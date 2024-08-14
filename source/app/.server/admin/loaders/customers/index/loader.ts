@@ -6,6 +6,7 @@ import {Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {customerMapper} from '~/.server/admin/mappers/customer.mapper';
 import {
+  hasNextCalculate,
   makeQuery,
   queryToPagination,
   queryToSearch,
@@ -88,7 +89,6 @@ export async function loader({request}: LoaderFunctionArgs) {
     };
   }
 
-
   const customers = await prisma.customer.findMany({
     include: {
       addresses: true
@@ -110,7 +110,7 @@ export async function loader({request}: LoaderFunctionArgs) {
     }
   });
 
-  pagination.hasNext = pagination.skip + pagination.take < pagination.total;
+  pagination.hasNext = hasNextCalculate(pagination);
 
   return json({customers: customers.map(customerMapper), query: makeQuery(search, sort, data), pagination});
 }

@@ -6,10 +6,9 @@ import {z} from 'zod';
 import {$Enums, Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {IOffsetPaginationInfoDto} from '~/.server/shared/dto/offset-pagination-info.dto';
+import {sortValueToField} from '~/.server/admin/utils/query.util';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
-
-//http://localhost:3000/admin/users?take=1&skip=0&q=ecomcms&role=ADMIN,STUFF&accountStatus=active
 
 export enum EAccountStatus {
   active = 'active',
@@ -33,45 +32,6 @@ export enum EUsersSortVariant {
   deletedAt_desc = 'deletedAt_desc',
 }
 
-export const sortValueToField = <O extends object>(value: string) => {
-  const [field, order] = value.split('_');
-  return {
-    [field]: order
-  } as O;
-};
-
-export const usersSortValueToFieldValue = (sortValue: EUsersSortVariant) => {
-  switch (sortValue) {
-    case EUsersSortVariant.id_asc:
-      return {id: 'asc'};
-    case EUsersSortVariant.id_desc:
-      return {id: 'desc'};
-    case EUsersSortVariant.fullName_asc:
-      return {fullName: 'asc'};
-    case EUsersSortVariant.fullName_desc:
-      return {fullName: 'desc'};
-    case EUsersSortVariant.email_asc:
-      return {email: 'asc'};
-    case EUsersSortVariant.email_desc:
-      return {email: 'desc'};
-    case EUsersSortVariant.role_asc:
-      return {role: 'asc'};
-    case EUsersSortVariant.role_desc:
-      return {role: 'desc'};
-    case EUsersSortVariant.createdAt_asc:
-      return {createdAt: 'asc'};
-    case EUsersSortVariant.createdAt_desc:
-      return {createdAt: 'desc'};
-    case EUsersSortVariant.updatedAt_asc:
-      return {updatedAt: 'asc'};
-    case EUsersSortVariant.updatedAt_desc:
-      return {updatedAt: 'desc'};
-    case EUsersSortVariant.deletedAt_asc:
-      return {deletedAt: 'asc'};
-    case EUsersSortVariant.deletedAt_desc:
-      return {deletedAt: 'desc'};
-  }
-};
 
 export const userQueryValidator = withZod(
   z.object({
@@ -137,10 +97,6 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
       deletedAt: null
     };
   }
-
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const sortExample = data?.sort ? usersSortValueToFieldValue(data.sort) : {id: 'desc'};
 
   if (data?.sort) {
     orderBy = sortValueToField<UserOrderByWithRelationInput>(data.sort);

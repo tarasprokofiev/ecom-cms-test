@@ -5,7 +5,7 @@ import {z} from 'zod';
 import {Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {customerMapper} from '~/.server/admin/mappers/customer.mapper';
-import {queryToPagination, sortValueToField} from '~/.server/admin/utils/query.util';
+import {queryToPagination, queryToSearch, sortValueToField} from '~/.server/admin/utils/query.util';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
 
@@ -25,7 +25,6 @@ export enum ECustomersSortVariant {
 
 export const customerQueryValidator = withZod(
   z.object({
-    q: z.string().optional(),
     sort: z.nativeEnum(ECustomersSortVariant).optional(),
     accountStatus: z.nativeEnum(EAccountStatus).optional(),
   })
@@ -37,27 +36,29 @@ export async function loader({request}: LoaderFunctionArgs) {
   const {data} = await customerQueryValidator.validate(
     searchParams
   );
+  const search = await queryToSearch(searchParams);
+  const pagination = await queryToPagination(searchParams);
 
   let searchQuery;
   let filterAccountStatusQuery;
   let orderBy: CustomerOrderByWithRelationInput = {createdAt: 'desc' as const};
 
-  if (data?.q) {
+  if (search) {
     searchQuery = {
       OR: [
-        {email: {contains: data?.q, mode: 'insensitive' as const}},
-        {firstName: {contains: data?.q, mode: 'insensitive' as const}},
-        {lastName: {contains: data?.q, mode: 'insensitive' as const}},
-        {phone: {contains: data?.q, mode: 'insensitive' as const}},
+        {email: {contains: search, mode: 'insensitive' as const}},
+        {firstName: {contains: search, mode: 'insensitive' as const}},
+        {lastName: {contains: search, mode: 'insensitive' as const}},
+        {phone: {contains: search, mode: 'insensitive' as const}},
         {
           addresses: {
             some: {
               OR: [
-                {firstName: {contains: data?.q, mode: 'insensitive' as const}},
-                {lastName: {contains: data?.q, mode: 'insensitive' as const}},
-                {address: {contains: data?.q, mode: 'insensitive' as const}},
-                {phone: {contains: data?.q, mode: 'insensitive' as const}},
-                {company: {contains: data?.q, mode: 'insensitive' as const}}
+                {firstName: {contains: search, mode: 'insensitive' as const}},
+                {lastName: {contains: search, mode: 'insensitive' as const}},
+                {address: {contains: search, mode: 'insensitive' as const}},
+                {phone: {contains: search, mode: 'insensitive' as const}},
+                {company: {contains: search, mode: 'insensitive' as const}}
               ]
             }
           }
@@ -84,7 +85,6 @@ export async function loader({request}: LoaderFunctionArgs) {
     orderBy = sortValueToField<CustomerOrderByWithRelationInput>(data.sort);
   }
 
-  const pagination = await queryToPagination(searchParams);
 
   const customers = await prisma.customer.findMany({
     include: {

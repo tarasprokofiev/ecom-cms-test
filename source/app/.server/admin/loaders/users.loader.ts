@@ -5,7 +5,7 @@ import {withZod} from '@rvf/zod';
 import {z} from 'zod';
 import {$Enums, Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
-import {queryToPagination, sortValueToField} from '~/.server/admin/utils/query.util';
+import {queryToPagination, queryToSearch, sortValueToField} from '~/.server/admin/utils/query.util';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
 
@@ -34,7 +34,6 @@ export enum EUsersSortVariant {
 
 export const userQueryValidator = withZod(
   z.object({
-    q: z.string().optional(),
     role: z.preprocess((val) => String(val).split(','), z.nativeEnum($Enums.AdminRole).array()).optional(),
     accountStatus: z.nativeEnum(EAccountStatus).optional(),
     sort: z.nativeEnum(EUsersSortVariant).optional()
@@ -47,17 +46,19 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
   const {data} = await userQueryValidator.validate(
     searchParams
   );
+  const search = await queryToSearch(searchParams);
+  const pagination = await queryToPagination(searchParams);
 
   let searchQuery;
   let filterRoleQuery;
   let filterAccountStatusQuery;
   let orderBy: UserOrderByWithRelationInput = {id: 'desc' as const};
 
-  if (data?.q) {
+  if (search) {
     searchQuery = {
       OR: [
-        {email: {contains: data?.q, mode: 'insensitive' as const}},
-        {fullName: {contains: data?.q, mode: 'insensitive' as const}}
+        {email: {contains: search, mode: 'insensitive' as const}},
+        {fullName: {contains: search, mode: 'insensitive' as const}}
       ]
     };
   }
@@ -87,8 +88,6 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
   if (data?.sort) {
     orderBy = sortValueToField<UserOrderByWithRelationInput>(data.sort);
   }
-
-  const pagination = await queryToPagination(searchParams);
 
   const users = await prisma.user.findMany({
     take: pagination.take,

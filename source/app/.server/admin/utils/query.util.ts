@@ -45,3 +45,17 @@ export const queryToPagination = async (searchParams: URLSearchParams, limit: nu
 
   return makePagination(take, skip);
 };
+
+export const queryToSearch = async (searchParams: URLSearchParams): Promise<string | undefined> => {
+  const queryValidator = withZod(
+    z.object({
+      q: z.string().optional(),
+    })
+  );
+
+  const {data} = await queryValidator.validate(
+    searchParams
+  );
+
+  return data?.q;
+};

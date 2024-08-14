@@ -17,7 +17,7 @@ export const PrimaryInfoCard: FC<PrimaryInfoCardProps> = ({customer}) => {
             Primary info
           </Text>
           <Button
-            url={`${EAdminNavigation.customers}/${customer.id}/primary`}
+            url={`${EAdminNavigation.customers}/${customer.id}/edit-primary`}
             accessibilityLabel="Edit primary info"
             icon={EditIcon}
           />

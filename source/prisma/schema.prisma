@@ -72,6 +72,22 @@ model CustomerAddress {
   @@index([firstName, lastName, company, address, phone], name: "CustomerAddressSearchIndex")
 }
 
+model Category {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  title       String
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  @@index([createdAt], name: "CategoryCreatedAtIndex")
+  @@index([updatedAt], name: "CategoryUpdatedAtIndex")
+  @@index([deletedAt], name: "CategoryDeletedAtIndex")
+  @@index([title, slug], name: "CategorySearchIndex")
+}
+
 // Enums
 enum AdminRole {
   STUFF

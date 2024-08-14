@@ -6,6 +6,7 @@ import {Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {customerMapper} from '~/.server/admin/mappers/customer.mapper';
 import {queryToPagination, queryToSearch, sortValueToField} from '~/.server/admin/utils/query.util';
+import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
 
@@ -46,19 +47,19 @@ export async function loader({request}: LoaderFunctionArgs) {
   if (search) {
     searchQuery = {
       OR: [
-        {email: {contains: search, mode: 'insensitive' as const}},
-        {firstName: {contains: search, mode: 'insensitive' as const}},
-        {lastName: {contains: search, mode: 'insensitive' as const}},
-        {phone: {contains: search, mode: 'insensitive' as const}},
+        {email: containsInsensitive(search)},
+        {firstName: containsInsensitive(search)},
+        {lastName: containsInsensitive(search)},
+        {phone: containsInsensitive(search)},
         {
           addresses: {
             some: {
               OR: [
-                {firstName: {contains: search, mode: 'insensitive' as const}},
-                {lastName: {contains: search, mode: 'insensitive' as const}},
-                {address: {contains: search, mode: 'insensitive' as const}},
-                {phone: {contains: search, mode: 'insensitive' as const}},
-                {company: {contains: search, mode: 'insensitive' as const}}
+                {firstName: containsInsensitive(search)},
+                {lastName: containsInsensitive(search)},
+                {address: containsInsensitive(search)},
+                {phone: containsInsensitive(search)},
+                {company: containsInsensitive(search)}
               ]
             }
           }

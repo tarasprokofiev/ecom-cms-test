@@ -6,6 +6,7 @@ import {z} from 'zod';
 import {$Enums, Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {queryToPagination, queryToSearch, sortValueToField} from '~/.server/admin/utils/query.util';
+import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
 
@@ -57,8 +58,8 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
   if (search) {
     searchQuery = {
       OR: [
-        {email: {contains: search, mode: 'insensitive' as const}},
-        {fullName: {contains: search, mode: 'insensitive' as const}}
+        {email: containsInsensitive(search)},
+        {fullName: containsInsensitive(search)}
       ]
     };
   }

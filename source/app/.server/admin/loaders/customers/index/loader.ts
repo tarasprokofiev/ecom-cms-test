@@ -5,7 +5,7 @@ import {z} from 'zod';
 import {Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
 import {customerMapper} from '~/.server/admin/mappers/customer.mapper';
-import {makePagination, sortValueToField} from '~/.server/admin/utils/query.util';
+import {queryToPagination, sortValueToField} from '~/.server/admin/utils/query.util';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
 
@@ -25,8 +25,6 @@ export enum ECustomersSortVariant {
 
 export const customerQueryValidator = withZod(
   z.object({
-    take: z.coerce.number().int().positive().optional(),
-    skip: z.coerce.number().int().nonnegative().optional(),
     q: z.string().optional(),
     sort: z.nativeEnum(ECustomersSortVariant).optional(),
     accountStatus: z.nativeEnum(EAccountStatus).optional(),
@@ -40,20 +38,9 @@ export async function loader({request}: LoaderFunctionArgs) {
     searchParams
   );
 
-
-  let take = 2;
-  let skip = 0;
   let searchQuery;
   let filterAccountStatusQuery;
   let orderBy: CustomerOrderByWithRelationInput = {createdAt: 'desc' as const};
-
-  if (data?.take) {
-    take = data.take;
-  }
-
-  if (data?.skip) {
-    skip = data.skip;
-  }
 
   if (data?.q) {
     searchQuery = {
@@ -97,14 +84,14 @@ export async function loader({request}: LoaderFunctionArgs) {
     orderBy = sortValueToField<CustomerOrderByWithRelationInput>(data.sort);
   }
 
-  const pagination = makePagination(take, skip);
+  const pagination = await queryToPagination(searchParams);
 
   const customers = await prisma.customer.findMany({
     include: {
       addresses: true
     },
-    take,
-    skip,
+    take: pagination.take,
+    skip: pagination.skip,
     where: {
       ...searchQuery,
       ...filterAccountStatusQuery,
@@ -120,7 +107,7 @@ export async function loader({request}: LoaderFunctionArgs) {
     }
   });
 
-  pagination.hasNext = skip + take < pagination.total;
+  pagination.hasNext = pagination.skip + pagination.take < pagination.total;
 
   return json({customers: customers.map(customerMapper), query: data, pagination});
 }

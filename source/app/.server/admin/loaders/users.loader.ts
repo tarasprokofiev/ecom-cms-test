@@ -5,7 +5,7 @@ import {withZod} from '@rvf/zod';
 import {z} from 'zod';
 import {$Enums, Prisma} from '@prisma/client';
 import type {SerializeFrom} from '@remix-run/server-runtime';
-import {makePagination, sortValueToField} from '~/.server/admin/utils/query.util';
+import {queryToPagination, sortValueToField} from '~/.server/admin/utils/query.util';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
 
@@ -34,8 +34,6 @@ export enum EUsersSortVariant {
 
 export const userQueryValidator = withZod(
   z.object({
-    take: z.coerce.number().int().positive().optional(),
-    skip: z.coerce.number().int().nonnegative().optional(),
     q: z.string().optional(),
     role: z.preprocess((val) => String(val).split(','), z.nativeEnum($Enums.AdminRole).array()).optional(),
     accountStatus: z.nativeEnum(EAccountStatus).optional(),
@@ -50,21 +48,10 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
     searchParams
   );
 
-
-  let take = 2;
-  let skip = 0;
   let searchQuery;
   let filterRoleQuery;
   let filterAccountStatusQuery;
   let orderBy: UserOrderByWithRelationInput = {id: 'desc' as const};
-
-  if (data?.take) {
-    take = data.take;
-  }
-
-  if (data?.skip) {
-    skip = data.skip;
-  }
 
   if (data?.q) {
     searchQuery = {
@@ -101,11 +88,11 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
     orderBy = sortValueToField<UserOrderByWithRelationInput>(data.sort);
   }
 
-  const pagination = makePagination(take, skip);
+  const pagination = await queryToPagination(searchParams);
 
   const users = await prisma.user.findMany({
-    take,
-    skip,
+    take: pagination.take,
+    skip: pagination.skip,
     where: {
       ...searchQuery,
       ...filterRoleQuery,
@@ -123,7 +110,7 @@ export async function adminUsersLoader({request}: LoaderFunctionArgs) {
     }
   });
 
-  pagination.hasNext = skip + take < pagination.total;
+  pagination.hasNext = pagination.skip + pagination.take < pagination.total;
 
   return json({users: users.map(userMapper), query: data, pagination});
 }

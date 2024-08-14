@@ -1,8 +1,32 @@
 import {ChoiceList, IndexFilters, IndexFiltersProps, useSetIndexFiltersMode,} from '@shopify/polaris';
 import React, {FC, useCallback, useState} from 'react';
-import type {EAccountStatus, TAdminUsersLoaderData} from '~/.server/admin/loaders/users.loader';
+import type {TAdminUsersLoaderData} from '~/.server/admin/loaders/users.loader';
 import {useSearchParams} from '@remix-run/react';
 import {$Enums} from '@prisma/client';
+import {reqSortToSort, sortArrToReqSort} from '~/admin/utils/filter.util';
+
+
+export enum EAccountStatus {
+  active = 'active',
+  disabled = 'disabled'
+}
+
+export enum EUsersSortVariant {
+  id_asc = 'id_asc',
+  id_desc = 'id_desc',
+  fullName_asc = 'fullName_asc',
+  fullName_desc = 'fullName_desc',
+  email_asc = 'email_asc',
+  email_desc = 'email_desc',
+  role_asc = 'role_asc',
+  role_desc = 'role_desc',
+  createdAt_asc = 'createdAt_asc',
+  createdAt_desc = 'createdAt_desc',
+  updatedAt_asc = 'updatedAt_asc',
+  updatedAt_desc = 'updatedAt_desc',
+  deletedAt_asc = 'deletedAt_asc',
+  deletedAt_desc = 'deletedAt_desc',
+}
 
 export interface UsersTableFiltersProps {
   query?: TAdminUsersLoaderData['query'];
@@ -14,28 +38,28 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
 
   /* SORT START */
   const sortOptions: IndexFiltersProps['sortOptions'] = [
-    {label: 'ID', value: 'id asc', directionLabel: 'Oldest to newest'},
-    {label: 'ID', value: 'id desc', directionLabel: 'Newest to oldest'},
-    {label: 'Email', value: 'email asc', directionLabel: 'A-Z'},
-    {label: 'Email', value: 'email desc', directionLabel: 'Z-A'},
-    {label: 'Full Name', value: 'fullName asc', directionLabel: 'A-Z'},
-    {label: 'Full Name', value: 'fullName desc', directionLabel: 'Z-A'},
-    {label: 'Role', value: 'role asc', directionLabel: 'A-Z'},
-    {label: 'Role', value: 'role desc', directionLabel: 'Z-A'},
-    {label: 'Created', value: 'createdAt asc', directionLabel: 'Oldest to newest'},
-    {label: 'Created', value: 'createdAt desc', directionLabel: 'Newest to oldest'},
-    {label: 'Updated', value: 'updatedAt asc', directionLabel: 'Oldest to newest'},
-    {label: 'Updated', value: 'updatedAt desc', directionLabel: 'Newest to oldest'},
-    {label: 'Deleted', value: 'deletedAt asc', directionLabel: 'Oldest to newest'},
-    {label: 'Deleted', value: 'deletedAt desc', directionLabel: 'Newest to oldest'},
+    {label: 'ID', value: reqSortToSort(EUsersSortVariant.id_asc), directionLabel: 'Oldest to newest'},
+    {label: 'ID', value: reqSortToSort(EUsersSortVariant.id_desc), directionLabel: 'Newest to oldest'},
+    {label: 'Email', value: reqSortToSort(EUsersSortVariant.email_asc), directionLabel: 'A-Z'},
+    {label: 'Email', value: reqSortToSort(EUsersSortVariant.email_desc), directionLabel: 'Z-A'},
+    {label: 'Full Name', value: reqSortToSort(EUsersSortVariant.fullName_asc), directionLabel: 'A-Z'},
+    {label: 'Full Name', value: reqSortToSort(EUsersSortVariant.fullName_desc), directionLabel: 'Z-A'},
+    {label: 'Role', value: reqSortToSort(EUsersSortVariant.role_asc), directionLabel: 'A-Z'},
+    {label: 'Role', value: reqSortToSort(EUsersSortVariant.role_desc), directionLabel: 'Z-A'},
+    {label: 'Created', value: reqSortToSort(EUsersSortVariant.createdAt_asc), directionLabel: 'Oldest to newest'},
+    {label: 'Created', value: reqSortToSort(EUsersSortVariant.createdAt_desc), directionLabel: 'Newest to oldest'},
+    {label: 'Updated', value: reqSortToSort(EUsersSortVariant.updatedAt_asc), directionLabel: 'Oldest to newest'},
+    {label: 'Updated', value: reqSortToSort(EUsersSortVariant.updatedAt_desc), directionLabel: 'Newest to oldest'},
+    {label: 'Deleted', value: reqSortToSort(EUsersSortVariant.deletedAt_asc), directionLabel: 'Oldest to newest'},
+    {label: 'Deleted', value: reqSortToSort(EUsersSortVariant.deletedAt_desc), directionLabel: 'Newest to oldest'},
   ];
 
-  const sortOrder = query?.sort || 'id_desc';
-  const sortSelected = [sortOrder.replace('_', ' ')];
+  const sortOrder = query?.sort || EUsersSortVariant.id_desc;
+  const sortSelected = [reqSortToSort(sortOrder)];
 
   const setSortSelected = (value: string[]) => {
     setSearchParams((prev) => {
-      prev.set('sort', value[0].replace(' ', '_'));
+      prev.set('sort', sortArrToReqSort(value));
       return prev;
     });
   };
@@ -164,11 +188,11 @@ export const AdminUsersTableFilters: FC<UsersTableFiltersProps> = ({query}) => {
           choices={[
             {
               label: 'Active',
-              value: 'active' as const,
+              value: EAccountStatus.active,
             },
             {
               label: 'Inactive',
-              value: 'disabled' as const,
+              value: EAccountStatus.disabled,
             }
           ]}
           selected={accountStatus ? [accountStatus] : []}

@@ -15,31 +15,9 @@ import {
   sortValueToField
 } from '~/.server/admin/utils/query.util';
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
+import {EAccountStatus, EUsersSortVariant} from '~/admin/components/UsersTable/UsersTableFilters';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
-
-export enum EAccountStatus {
-  active = 'active',
-  disabled = 'disabled'
-}
-
-export enum EUsersSortVariant {
-  id_asc = 'id_asc',
-  id_desc = 'id_desc',
-  fullName_asc = 'fullName_asc',
-  fullName_desc = 'fullName_desc',
-  email_asc = 'email_asc',
-  email_desc = 'email_desc',
-  role_asc = 'role_asc',
-  role_desc = 'role_desc',
-  createdAt_asc = 'createdAt_asc',
-  createdAt_desc = 'createdAt_desc',
-  updatedAt_asc = 'updatedAt_asc',
-  updatedAt_desc = 'updatedAt_desc',
-  deletedAt_asc = 'deletedAt_asc',
-  deletedAt_desc = 'deletedAt_desc',
-}
-
 
 export const userQueryValidator = withZod(
   z.object({

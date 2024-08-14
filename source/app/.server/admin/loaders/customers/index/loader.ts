@@ -15,22 +15,11 @@ import {
   sortValueToField
 } from '~/.server/admin/utils/query.util';
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
+import {EAccountStatus} from '~/admin/components/UsersTable/UsersTableFilters';
+import {ECustomersSortVariant} from '~/admin/components/customers/Index/Filters';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
 
-export enum EAccountStatus {
-  active = 'active',
-  disabled = 'disabled'
-}
-
-export enum ECustomersSortVariant {
-  createdAt_asc = 'createdAt_asc',
-  createdAt_desc = 'createdAt_desc',
-  updatedAt_asc = 'updatedAt_asc',
-  updatedAt_desc = 'updatedAt_desc',
-  deletedAt_asc = 'deletedAt_asc',
-  deletedAt_desc = 'deletedAt_desc',
-}
 
 export const customerQueryValidator = withZod(
   z.object({

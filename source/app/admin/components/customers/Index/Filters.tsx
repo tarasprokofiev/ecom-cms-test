@@ -1,8 +1,18 @@
 import {ChoiceList, IndexFilters, IndexFiltersProps, useSetIndexFiltersMode,} from '@shopify/polaris';
 import React, {FC, useCallback, useState} from 'react';
-import type {EAccountStatus} from '~/.server/admin/loaders/users.loader';
 import {useSearchParams} from '@remix-run/react';
 import type {TAdminCustomersLoaderData} from '~/.server/admin/loaders/customers/index/loader';
+import {EAccountStatus} from '~/admin/components/UsersTable/UsersTableFilters';
+import {reqSortToSort, sortArrToReqSort} from '~/admin/utils/filter.util';
+
+export enum ECustomersSortVariant {
+  createdAt_asc = 'createdAt_asc',
+  createdAt_desc = 'createdAt_desc',
+  updatedAt_asc = 'updatedAt_asc',
+  updatedAt_desc = 'updatedAt_desc',
+  deletedAt_asc = 'deletedAt_asc',
+  deletedAt_desc = 'deletedAt_desc',
+}
 
 export interface FiltersProps {
   query?: TAdminCustomersLoaderData['query'];
@@ -14,20 +24,20 @@ export const Filters: FC<FiltersProps> = ({query}) => {
 
   /* SORT START */
   const sortOptions: IndexFiltersProps['sortOptions'] = [
-    {label: 'Created', value: 'createdAt asc', directionLabel: 'Oldest to newest'},
-    {label: 'Created', value: 'createdAt desc', directionLabel: 'Newest to oldest'},
-    {label: 'Updated', value: 'updatedAt asc', directionLabel: 'Oldest to newest'},
-    {label: 'Updated', value: 'updatedAt desc', directionLabel: 'Newest to oldest'},
-    {label: 'Deleted', value: 'deletedAt asc', directionLabel: 'Oldest to newest'},
-    {label: 'Deleted', value: 'deletedAt desc', directionLabel: 'Newest to oldest'},
+    {label: 'Created', value: reqSortToSort(ECustomersSortVariant.createdAt_asc), directionLabel: 'Oldest to newest'},
+    {label: 'Created', value: reqSortToSort(ECustomersSortVariant.createdAt_desc), directionLabel: 'Newest to oldest'},
+    {label: 'Updated', value: reqSortToSort(ECustomersSortVariant.updatedAt_asc), directionLabel: 'Oldest to newest'},
+    {label: 'Updated', value: reqSortToSort(ECustomersSortVariant.updatedAt_desc), directionLabel: 'Newest to oldest'},
+    {label: 'Deleted', value: reqSortToSort(ECustomersSortVariant.deletedAt_asc), directionLabel: 'Oldest to newest'},
+    {label: 'Deleted', value: reqSortToSort(ECustomersSortVariant.deletedAt_desc), directionLabel: 'Newest to oldest'},
   ];
 
-  const sortOrder = query?.sort || 'createdAt_desc';
-  const sortSelected = [sortOrder.replace('_', ' ')];
+  const sortOrder = query?.sort || ECustomersSortVariant.createdAt_desc;
+  const sortSelected = [reqSortToSort(sortOrder)];
 
   const setSortSelected = (value: string[]) => {
     setSearchParams((prev) => {
-      prev.set('sort', value[0].replace(' ', '_'));
+      prev.set('sort', sortArrToReqSort(value));
       return prev;
     });
   };

@@ -1,6 +1,6 @@
 import {redirect} from '@remix-run/node';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
-import {prisma} from '~/.server/shared/utils/prisma.util';
+import {prisma} from '~/.server/shared/services/prisma.service';
 
 export type AdminUsersSingleDeleteActionArgs = {
   id: string;

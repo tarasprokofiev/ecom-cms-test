@@ -2,7 +2,7 @@ import {ActionFunctionArgs, redirect} from '@remix-run/node';
 import {authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {validationError} from 'remix-validated-form';
-import {prisma} from '~/.server/shared/utils/prisma.util';
+import {prisma} from '~/.server/shared/services/prisma.service';
 import {newFormValidator} from '~/admin/components/customers/addresses/NewForm/NewForm.validator';
 
 export async function action({request, params}: ActionFunctionArgs) {

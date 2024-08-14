@@ -11,9 +11,7 @@ export {loader} from '~/.server/admin/loaders/customers/index/loader';
 
 export default function AdminCustomersIndex() {
   const data = useLoaderData<TAdminCustomersLoader>();
-
-  console.log('data', data);
-
+  
   return (
     <Page
       fullWidth

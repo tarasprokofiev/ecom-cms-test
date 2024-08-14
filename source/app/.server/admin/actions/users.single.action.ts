@@ -1,7 +1,7 @@
 import {ActionFunctionArgs, redirect} from '@remix-run/node';
 import {authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
-import {prisma} from '~/.server/shared/utils/prisma.util';
+import {prisma} from '~/.server/shared/services/prisma.service';
 import {EAdminUserAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
 import {adminUsersSingleRoleAction} from '~/.server/admin/actions/users.single.role.action';
 import {validationError} from 'remix-validated-form';

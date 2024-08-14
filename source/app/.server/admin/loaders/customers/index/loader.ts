@@ -1,5 +1,5 @@
 import {json, LoaderFunctionArgs} from '@remix-run/node';
-import {prisma} from '~/.server/shared/utils/prisma.util';
+import {prisma} from '~/.server/shared/services/prisma.service';
 import {withZod} from '@rvf/zod';
 import {z} from 'zod';
 import {Prisma} from '@prisma/client';

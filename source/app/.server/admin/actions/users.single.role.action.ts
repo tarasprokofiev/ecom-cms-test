@@ -1,7 +1,7 @@
 import {redirect} from '@remix-run/node';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {validationError} from 'remix-validated-form';
-import {prisma} from '~/.server/shared/utils/prisma.util';
+import {prisma} from '~/.server/shared/services/prisma.service';
 import {usersRoleFormValidator} from '~/admin/components/UsersSingle/UsersRoleForm.validator';
 import {$Enums} from '@prisma/client';
 

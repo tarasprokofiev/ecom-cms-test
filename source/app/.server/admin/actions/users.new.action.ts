@@ -3,7 +3,7 @@ import {authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {validationError} from 'remix-validated-form';
 import {usersNewFormValidator} from '~/admin/components/UsersNewForm/UsersNewForm.validator';
-import {prisma} from '~/.server/shared/utils/prisma.util';
+import {prisma} from '~/.server/shared/services/prisma.service';
 import {$Enums} from '@prisma/client';
 import {hashPassword} from '~/.server/shared/utils/auth.util';
 import {joinFirstName} from '~/admin/utils/user.util';

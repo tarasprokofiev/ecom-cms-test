@@ -26,7 +26,7 @@ export async function action({request}: ActionFunctionArgs) {
   if (exist) {
     return validationError({
       fieldErrors: {
-        email: 'Category with this slug already exist'
+        slug: 'Category with this slug already exist'
       }
     });
   }

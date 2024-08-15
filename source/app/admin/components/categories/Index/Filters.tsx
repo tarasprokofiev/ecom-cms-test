@@ -123,11 +123,11 @@ export const Filters: FC<FiltersProps> = ({query}) => {
           choices={[
             {
               label: 'Active',
-              value: 'active' as const,
+              value: EAccountStatus.active,
             },
             {
               label: 'Inactive',
-              value: 'disabled' as const,
+              value: EAccountStatus.disabled,
             }
           ]}
           selected={status ? [status] : []}

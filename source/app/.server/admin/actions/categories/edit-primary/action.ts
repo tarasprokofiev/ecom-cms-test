@@ -36,7 +36,7 @@ export async function action({request, params}: ActionFunctionArgs) {
 
   const {slug, title, description} = data.data;
 
-  // check unique email
+  // check unique slug
   const exist = await prisma.category.findFirst({
     where: {
       slug,
@@ -49,12 +49,12 @@ export async function action({request, params}: ActionFunctionArgs) {
   if (exist) {
     return validationError({
       fieldErrors: {
-        email: 'Category with this slug already exist'
+        slug: 'Category with this slug already exist'
       }
     });
   }
 
-  // update Category
+  // update category
   await prisma.category.update({
     where: {id: Number(id)},
     data: {

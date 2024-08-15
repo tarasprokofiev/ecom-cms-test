@@ -15,7 +15,7 @@ export default function AdminCategoriesIndex() {
   return (
     <Page
       fullWidth
-      title="Customers"
+      title="Categories"
       primaryAction={{
         content: 'Create categories',
         icon: PlusIcon,

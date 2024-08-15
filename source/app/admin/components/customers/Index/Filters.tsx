@@ -2,8 +2,8 @@ import {ChoiceList, IndexFilters, IndexFiltersProps, useSetIndexFiltersMode,} fr
 import React, {FC, useCallback, useState} from 'react';
 import {useSearchParams} from '@remix-run/react';
 import type {TAdminCustomersLoaderData} from '~/.server/admin/loaders/customers/index/loader';
-import {EAccountStatus} from '~/admin/components/UsersTable/UsersTableFilters';
 import {reqSortToSort, sortArrToReqSort} from '~/admin/utils/filter.util';
+import {ESoftDeleteStatus} from '~/admin/constants/entries.constant';
 
 export enum ECustomersSortVariant {
   createdAt_asc = 'createdAt_asc',
@@ -73,25 +73,25 @@ export const Filters: FC<FiltersProps> = ({query}) => {
     }, 300);
   }, [setSearchParams]);
 
-  const [accountStatus, setAccountStatus] = useState<EAccountStatus | undefined>(
-    query?.filters?.accountStatus,
+  const [softDeleteStatus, setSoftDeleteStatus] = useState<ESoftDeleteStatus | undefined>(
+    query?.filters?.softDeleteStatus,
   );
 
   const {mode, setMode} = useSetIndexFiltersMode();
 
   const handleAccountStatusChange = useCallback(
-    (value: EAccountStatus[]) => {
-      setAccountStatus(value?.[0]);
+    (value: ESoftDeleteStatus[]) => {
+      setSoftDeleteStatus(value?.[0]);
       setSearchParams((prev) => {
         prev.delete('skip');
         prev.delete('take');
 
         if (value.length === 0) {
-          prev.delete('accountStatus');
+          prev.delete('softDeleteStatus');
           return prev;
         }
 
-        prev.set('accountStatus', value[0]);
+        prev.set('softDeleteStatus', value[0]);
         return prev;
       });
     },
@@ -100,22 +100,22 @@ export const Filters: FC<FiltersProps> = ({query}) => {
 
   const handleFiltersClearAll = useCallback(() => {
     setQueryValue('');
-    setAccountStatus(undefined);
+    setSoftDeleteStatus(undefined);
 
     setSearchParams((prev) => {
       prev.delete('q');
       prev.delete('role');
-      prev.delete('accountStatus');
+      prev.delete('softDeleteStatus');
       prev.delete('skip');
       prev.delete('take');
       return prev;
     });
-  }, [setSearchParams, setAccountStatus]);
+  }, [setSearchParams, setSoftDeleteStatus]);
 
   const filters = [
     {
-      key: 'accountStatus',
-      label: 'Account Status',
+      key: 'softDeleteStatus',
+      label: 'Soft Delete Status',
       filter: (
         <ChoiceList
           title="Role"
@@ -123,14 +123,14 @@ export const Filters: FC<FiltersProps> = ({query}) => {
           choices={[
             {
               label: 'Active',
-              value: 'active' as const,
+              value: ESoftDeleteStatus.active,
             },
             {
               label: 'Inactive',
-              value: 'disabled' as const,
+              value: ESoftDeleteStatus.deleted,
             }
           ]}
-          selected={accountStatus ? [accountStatus] : []}
+          selected={softDeleteStatus ? [softDeleteStatus] : []}
           onChange={handleAccountStatusChange}
           allowMultiple={false}
         />
@@ -140,11 +140,11 @@ export const Filters: FC<FiltersProps> = ({query}) => {
   ];
 
   const appliedFilters: IndexFiltersProps['appliedFilters'] = [];
-  if (accountStatus && !isEmpty(accountStatus)) {
-    const key = 'accountStatus';
+  if (softDeleteStatus && !isEmpty(softDeleteStatus)) {
+    const key = 'softDeleteStatus';
     appliedFilters.push({
       key,
-      label: `Account status ${accountStatus}`,
+      label: `Soft Delete Status ${softDeleteStatus}`,
       onRemove: handleAccountStatusChange.bind(null, []),
     });
   }

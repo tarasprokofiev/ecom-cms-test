@@ -15,15 +15,15 @@ import {
   sortValueToField
 } from '~/.server/admin/utils/query.util';
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
-import {EAccountStatus} from '~/admin/components/UsersTable/UsersTableFilters';
 import {ECustomersSortVariant} from '~/admin/components/customers/Index/Filters';
+import {ESoftDeleteStatus} from '~/admin/constants/entries.constant';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
 
 
 export const customerQueryValidator = withZod(
   z.object({
-    accountStatus: z.nativeEnum(EAccountStatus).optional(),
+    softDeleteStatus: z.nativeEnum(ESoftDeleteStatus).optional(),
   })
 );
 
@@ -65,7 +65,7 @@ export async function loader({request}: LoaderFunctionArgs) {
     };
   }
 
-  if (data?.accountStatus === EAccountStatus.disabled) {
+  if (data?.softDeleteStatus === ESoftDeleteStatus.deleted) {
     filterAccountStatusQuery = {
       deletedAt: {
         not: null
@@ -73,7 +73,7 @@ export async function loader({request}: LoaderFunctionArgs) {
     };
   }
 
-  if (data?.accountStatus === EAccountStatus.active) {
+  if (data?.softDeleteStatus === ESoftDeleteStatus.active) {
     filterAccountStatusQuery = {
       deletedAt: null
     };

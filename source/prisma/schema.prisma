@@ -82,14 +82,60 @@ model Category {
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
 
+  products Product[]
+
   @@index([createdAt], name: "CategoryCreatedAtIndex")
   @@index([updatedAt], name: "CategoryUpdatedAtIndex")
   @@index([deletedAt], name: "CategoryDeletedAtIndex")
   @@index([title, slug], name: "CategorySearchIndex")
 }
 
+model Product {
+  id             Int           @id @default(autoincrement())
+  slug           String        @unique
+  title          String
+  description    String
+  price          Int
+  costPerItem    Int
+  compareAtPrice Int
+  quantity       Int
+  sku            String?
+  barcode        String?
+  status         ProductStatus @default(DRAFT)
+  avgRate        Int           @default(0)
+  totalReviews   Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  // categories      Category[]
+  // images          ProductImage[]
+  // variants        ProductVariant[]
+  // reviews         ProductReview[]
+
+  @@index([status], name: "ProductStatusIndex")
+  @@index([categoryId], name: "ProductCategoryIdIndex")
+  @@index([createdAt], name: "ProductCreatedAtIndex")
+  @@index([updatedAt], name: "ProductUpdatedAtIndex")
+  @@index([deletedAt], name: "ProductDeletedAtIndex")
+  @@index([title, slug, sku, barcode], name: "ProductSearchIndex")
+  @@index([price], name: "ProductPriceIndex")
+  @@index([compareAtPrice], name: "ProductCompareAtPriceIndex")
+  @@index([avgRate], name: "ProductAvgRateIndex")
+  @@index([totalReviews], name: "ProductTotalReviewsIndex")
+}
+
 // Enums
 enum AdminRole {
   STUFF
   ADMIN
+}
+
+enum ProductStatus {
+  ACTIVE
+  DRAFT
+  ARCHIVED
 }

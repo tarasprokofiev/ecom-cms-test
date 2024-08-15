@@ -9,6 +9,7 @@ export enum EAdminNavigation {
   categories = '/admin/categories',
   categoriesCreate = '/admin/categories/new',
   products = '/admin/products',
+  productsCreate = '/admin/products/new',
   orders = '/admin/orders',
   carts = '/admin/carts',
 }

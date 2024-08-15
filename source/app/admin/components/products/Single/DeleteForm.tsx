@@ -4,6 +4,8 @@ import {ValidatedForm} from 'remix-validated-form';
 import {ValidatedSubmitButton} from '~/admin/ui/ValidatedSubmitButton/ValidatedSubmitButton';
 import type {TProductDto} from '~/.server/admin/dto/product.dto';
 import {deleteFormValidator} from '~/admin/components/products/Single/DeleteForm.validator';
+import {ValidatedAction} from '~/admin/ui/ValidatedAction/ValidatedAction';
+import {EAdminProductAction} from '~/admin/constants/action.constant';
 
 type Props = {
   product: Pick<TProductDto, 'title'>;
@@ -16,6 +18,9 @@ export const DeleteForm: FC<Props> = (props) => {
 
   return (
     <ValidatedForm validator={deleteFormValidator} method="post" onSubmit={toggleActive}>
+      <Box padding="200" paddingBlockEnd="0">
+        <ValidatedAction action={EAdminProductAction.deleteProduct}/>
+      </Box>
       <Box padding="400" paddingBlockStart="200">
         <Text as="p">
           Are you sure you want to delete {title}?

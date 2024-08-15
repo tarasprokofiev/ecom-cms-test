@@ -10,6 +10,7 @@ export const compareAtPriceRule = z.coerce.number().int().min(1, {message: 'Comp
 export const quantityRule = z.coerce.number().int().min(1, {message: 'Quantity must be greater than 0'});
 export const skuRule = z.string().trim().max(256, {message: 'SKU max length: 256'}).optional();
 export const barcodeRule = z.string().trim().max(256, {message: 'Barcode max length: 256'}).optional();
+export const categoryIdRule = z.coerce.number().positive({message: 'Category is required'});
 
 
 export const newFormValidator = withZod(

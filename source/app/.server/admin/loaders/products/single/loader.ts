@@ -4,6 +4,7 @@ import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {productMapper} from '~/.server/admin/mappers/product.mapper';
 import {SerializeFrom} from '@remix-run/server-runtime';
+import {categoryMapper} from '~/.server/admin/mappers/category.mapper';
 
 export async function loader({request, params}: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -28,7 +29,13 @@ export async function loader({request, params}: LoaderFunctionArgs) {
     return redirect(EAdminNavigation.products);
   }
 
-  return json({product: productMapper(product)});
+  const categories = await prisma.category.findMany({
+    where: {
+      deletedAt: null,
+    }
+  });
+
+  return json({product: productMapper(product), categories: categories.map(categoryMapper)});
 }
 
 export type TAdminProductsSingleLoader = typeof loader;

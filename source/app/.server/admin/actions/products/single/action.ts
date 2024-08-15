@@ -2,7 +2,10 @@ import {ActionFunctionArgs, redirect} from '@remix-run/node';
 import {authenticator} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {prisma} from '~/.server/shared/services/prisma.service';
-import {$Enums} from '@prisma/client';
+import {EAdminProductAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
+import {validationError} from 'remix-validated-form';
+import {deleteProduct} from '~/.server/admin/actions/products/single/delete-product';
+import {editCategory} from '~/.server/admin/actions/products/single/edit-category';
 
 export async function action({request, params}: ActionFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -24,15 +27,17 @@ export async function action({request, params}: ActionFunctionArgs) {
     return redirect(EAdminNavigation.products);
   }
 
-  // update product
-  await prisma.product.update({
-    where: {id: Number(id)},
-    data: {
-      status: $Enums.ProductStatus.ARCHIVED,
-      deletedAt: new Date()
+  const formData = await request.formData();
+  switch (formData.get(FORM_ACTION_FIELD)) {
+    case EAdminProductAction.updateCategory:
+      return editCategory({id: product.id, formData});
+    case EAdminProductAction.deleteProduct:
+      return deleteProduct({id: product.id});
+  }
+
+  return validationError({
+    fieldErrors: {
+      [FORM_ACTION_FIELD]: 'Invalid action'
     }
   });
-
-  // redirect to user page
-  return redirect(`${EAdminNavigation.products}/${id}`);
 }

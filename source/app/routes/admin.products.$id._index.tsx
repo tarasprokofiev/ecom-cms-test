@@ -38,7 +38,7 @@ export default function AdminProductsIdIndex() {
       }}
       secondaryActions={secondaryActions}
     >
-      <Single product={data?.product}/>
+      <Single product={data?.product} categories={data?.categories || []}/>
       <Modal
         size="small"
         open={active}

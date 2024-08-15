@@ -10,3 +10,8 @@ export enum EAdminCustomerAction {
   deleteAddress = 'delete_address',
   deleteCustomer = 'delete_customer',
 }
+
+export enum EAdminProductAction {
+  updateCategory = 'update_category',
+  deleteProduct = 'delete_product',
+}

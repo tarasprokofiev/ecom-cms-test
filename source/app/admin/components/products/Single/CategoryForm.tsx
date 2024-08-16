@@ -1,49 +1,26 @@
-import {Box, Button, Divider, FormLayout, InlineStack, SelectProps} from '@shopify/polaris';
-import React, {FC, useEffect, useMemo} from 'react';
+import {Box, Button, Divider, FormLayout, InlineStack} from '@shopify/polaris';
+import React, {FC} from 'react';
 import {ValidatedForm} from 'remix-validated-form';
-import {ValidatedSelect} from '~/admin/ui/ValidatedSelect/ValidatedSelect';
 import {ValidatedSubmitButton} from '~/admin/ui/ValidatedSubmitButton/ValidatedSubmitButton';
 import {ValidatedAction} from '~/admin/ui/ValidatedAction/ValidatedAction';
 import {EAdminProductAction} from '~/admin/constants/action.constant';
-import {TProductDto} from '~/.server/admin/dto/product.dto';
 import {categoryFormValidator} from '~/admin/components/products/Single/CategoryForm.validator';
 import {TCategoryDto} from '~/.server/admin/dto/category.dto';
-import {useFetcher} from '@remix-run/react';
-import {EAdminNavigation} from '~/admin/constants/navigation.constant';
-import type {TAdminCategoriesLoader} from '~/.server/admin/loaders/categories/index/loader';
+import {ValidatedAutocomplete} from '~/admin/ui/ValidatedAutocomplete/ValidatedAutocomplete';
 
 type Props = {
-  categoryId: TProductDto['categoryId'];
+  category: Pick<TCategoryDto, 'id' | 'title' | 'slug'> | null;
   categories: TCategoryDto[];
   toggleActive: () => void;
 }
 
 export const CategoryForm: FC<Props> = (props) => {
-  const {categoryId, categories, toggleActive} = props;
-  const fetcher = useFetcher<TAdminCategoriesLoader>();
+  const {category, toggleActive} = props;
 
-  useEffect(() => {
-    console.log('fetcher.submit');
-    fetcher.load(`${EAdminNavigation.categories}?index`);
-  }, []);
-
-  console.log('fetcher.data', fetcher.data?.categories);
-
-
-  const roleOptions: SelectProps['options'] = useMemo(() => (
-    [
-      {
-        label: 'Select category',
-        value: '',
-      },
-      ...(
-        categories.map((category) => ({
-          label: category.title,
-          value: category.id,
-        }))
-      )
-    ]
-  ), [categories]);
+  const defaultValue = category ? {
+    label: `${category.title} (${category.slug})`,
+    value: category.id,
+  } : undefined;
 
   return (
     <ValidatedForm validator={categoryFormValidator} method="post" onSubmit={toggleActive}>
@@ -53,11 +30,10 @@ export const CategoryForm: FC<Props> = (props) => {
 
       <Box padding="400" paddingBlockStart="200">
         <FormLayout>
-          <ValidatedSelect
-            label={null}
+          <ValidatedAutocomplete
+            label="Category"
             name="categoryId"
-            options={roleOptions}
-            defaultValue={String(categoryId)}
+            defaultValue={defaultValue}
           />
         </FormLayout>
       </Box>

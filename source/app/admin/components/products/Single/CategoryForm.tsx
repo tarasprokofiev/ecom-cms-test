@@ -6,13 +6,25 @@ import {ValidatedAction} from '~/admin/ui/ValidatedAction/ValidatedAction';
 import {EAdminProductAction} from '~/admin/constants/action.constant';
 import {categoryFormValidator} from '~/admin/components/products/Single/CategoryForm.validator';
 import {TCategoryDto} from '~/.server/admin/dto/category.dto';
-import {ValidatedAutocomplete} from '~/admin/ui/ValidatedAutocomplete/ValidatedAutocomplete';
+import {ValidatedLazyAutocomplete} from '~/admin/ui/ValidatedLazyAutocomplete/ValidatedLazyAutocomplete';
+import {EAdminNavigation} from '~/admin/constants/navigation.constant';
+import {
+  TAdminApiCategoriesLoader,
+  TAdminApiCategoriesLoaderData
+} from '~/.server/admin/loaders/api/categories/index/loader';
 
 type Props = {
   category: Pick<TCategoryDto, 'id' | 'title' | 'slug'> | null;
   categories: TCategoryDto[];
   toggleActive: () => void;
 }
+
+const responseToOptions = (data?: TAdminApiCategoriesLoaderData) => {
+  return data?.categories?.map((category) => ({
+    value: category.id,
+    label: `${category.title} (${category.slug})`,
+  })) || [];
+};
 
 export const CategoryForm: FC<Props> = (props) => {
   const {category, toggleActive} = props;
@@ -30,9 +42,11 @@ export const CategoryForm: FC<Props> = (props) => {
 
       <Box padding="400" paddingBlockStart="200">
         <FormLayout>
-          <ValidatedAutocomplete
+          <ValidatedLazyAutocomplete<TAdminApiCategoriesLoader>
             label="Category"
             name="categoryId"
+            url={EAdminNavigation.apiCategories}
+            responseToOptions={responseToOptions}
             defaultValue={defaultValue}
           />
         </FormLayout>

@@ -1,52 +1,38 @@
 import {useField} from 'remix-validated-form';
 import {Autocomplete} from '@shopify/polaris';
-import React, {useCallback, useEffect, useState} from 'react';
-import {useFetcher} from '@remix-run/react';
-import {EAdminNavigation} from '~/admin/constants/navigation.constant';
-import {TAdminApiCategoriesLoader} from '~/.server/admin/loaders/api/categories/index/loader';
+import React, {useCallback, useState} from 'react';
 
-type Option = {
+export type TAutocompleteOption = {
   value: string; label: string
 }
 
-export type ValidatedTextFieldProps = {
+export type ValidatedAutocompleteProps = {
   name: string;
   label?: string;
   listTitle?: string;
   placeholder?: string;
   autoComplete?: string;
-  defaultValue?: Option;
+  defaultValue?: TAutocompleteOption;
+  onChangeSearchQuery: (searchQuery: string) => void;
+  options: TAutocompleteOption[];
+  onSelect?: (selected: string[]) => void;
+  isFetching?: boolean;
 }
 
-export const ValidatedAutocomplete = (props: ValidatedTextFieldProps) => {
-  const fetcher = useFetcher<TAdminApiCategoriesLoader>();
-
-  const {name, label, defaultValue, listTitle, placeholder, autoComplete} = props;
+export const ValidatedAutocomplete = (props: ValidatedAutocompleteProps) => {
+  const {
+    name, label, listTitle, placeholder, autoComplete, defaultValue, onChangeSearchQuery,
+    options, onSelect, isFetching
+  } = props;
   const {error, getInputProps} = useField(name);
   const {onChange: inputPropsOnChange} = getInputProps();
+
+  const [value, setValue] = useState<string>(defaultValue?.value ?? '');
+  const [search, setSearch] = useState<string>(defaultValue?.label ?? '');
   const defaultSelected = defaultValue ? [defaultValue.value] : [];
-  const defaultOptions = defaultValue ? [{...defaultValue}] : [];
   const [selectedOptions, setSelectedOptions] = useState<string[]>(defaultSelected);
-  const [options, setOptions] = useState<Option[]>(defaultOptions);
-  const [inputValue, setInputValue] = useState<string>(defaultValue?.label || '');
-  const [value, setValue] = useState<string | undefined>(defaultValue?.value);
 
   const timerRef = React.useRef<number | null>(null);
-
-  const updateText = useCallback(
-    (value: string) => {
-      setInputValue(value);
-
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      timerRef.current = window.setTimeout(() => {
-        fetcher.load(`${EAdminNavigation.apiCategories}?q=${value}`);
-      }, 300);
-    },
-    [],
-  );
 
   const handleSelect = useCallback((selected: string[]) => {
     const selectedOption = options.find((option) => option.value === selected[0]);
@@ -55,28 +41,26 @@ export const ValidatedAutocomplete = (props: ValidatedTextFieldProps) => {
       return;
     }
 
-    setSelectedOptions([selectedOption.value]);
     setValue(selectedOption.value);
-    setInputValue(selectedOption.label);
+    setSearch(selectedOption.label);
+    setSelectedOptions([selectedOption.value]);
     inputPropsOnChange?.();
-  }, [options, inputPropsOnChange]);
+    onSelect?.([selectedOption.value]);
+  }, [inputPropsOnChange, setValue, onSelect, options]);
 
-  useEffect(() => {
-    fetcher.load(`${EAdminNavigation.apiCategories}`);
-  }, []);
-
-  useEffect(() => {
-    setOptions(fetcher.data?.categories?.map((category) => ({
-      value: category.id,
-      label: `${category.title} (${category.slug})`,
-    })) || []);
-  }, [fetcher.data?.categories]);
+  const handleSearch = useCallback(
+    (value: string) => {
+      setSearch(value);
+      onChangeSearchQuery(value);
+    },
+    [onChangeSearchQuery],
+  );
 
   const textField = (
     <Autocomplete.TextField
-      onChange={updateText}
+      onChange={handleSearch}
       label={label}
-      value={inputValue}
+      value={search}
       placeholder={placeholder}
       autoComplete={autoComplete || 'off'}
       error={error}
@@ -91,7 +75,7 @@ export const ValidatedAutocomplete = (props: ValidatedTextFieldProps) => {
         selected={selectedOptions}
         textField={textField}
         onSelect={handleSelect}
-        loading={false}
+        loading={isFetching}
         willLoadMoreResults={false}
       />
       <input type="hidden" name={name} value={value}/>

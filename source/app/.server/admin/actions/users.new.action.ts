@@ -1,5 +1,5 @@
 import {ActionFunctionArgs, redirect} from '@remix-run/node';
-import {authenticator} from '~/.server/admin/services/auth.service';
+import {getAuthUser} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {validationError} from 'remix-validated-form';
 import {usersNewFormValidator} from '~/admin/components/UsersNewForm/UsersNewForm.validator';
@@ -9,9 +9,7 @@ import {hashPassword} from '~/.server/shared/utils/auth.util';
 import {joinFirstName} from '~/admin/utils/user.util';
 
 export async function adminUsersNewAction({request}: ActionFunctionArgs) {
-  await authenticator.isAuthenticated(request, {
-    failureRedirect: EAdminNavigation.authLogin,
-  });
+  await getAuthUser(request);
 
   // validate form data
   const data = await usersNewFormValidator.validate(

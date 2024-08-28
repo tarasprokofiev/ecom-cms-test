@@ -17,6 +17,7 @@ import {
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
 import {EProductsSortVariant} from '~/admin/components/products/Index/Filters';
 import {ESoftDeleteStatus} from '~/admin/constants/entries.constant';
+import {getAuthUser} from '~/.server/admin/services/auth.service';
 
 type ProductOrderByWithRelationInput = Prisma.ProductOrderByWithRelationInput;
 
@@ -29,6 +30,8 @@ export const productQueryValidator = withZod(
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function loader({request}: LoaderFunctionArgs) {
+  await getAuthUser(request);
+
   const searchParams = requestToSearchParams(request);
   const {data} = await productQueryValidator.validate(
     searchParams

@@ -17,6 +17,7 @@ import {
 import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
 import {EUsersSortVariant} from '~/admin/components/UsersTable/UsersTableFilters';
 import {ESoftDeleteStatus} from '~/admin/constants/entries.constant';
+import {getAuthUser} from '~/.server/admin/services/auth.service';
 
 type UserOrderByWithRelationInput = Prisma.UserOrderByWithRelationInput;
 
@@ -29,6 +30,8 @@ export const userQueryValidator = withZod(
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function adminUsersLoader({request}: LoaderFunctionArgs) {
+  await getAuthUser(request);
+
   const searchParams = requestToSearchParams(request);
   const {data} = await userQueryValidator.validate(
     searchParams

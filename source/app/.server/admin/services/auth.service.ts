@@ -6,6 +6,8 @@ import {comparePassword} from '~/.server/shared/utils/auth.util';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {ValidatorErrorWrapper} from '~/.server/shared/errors/validator-error-wrapper';
 import {authLoginFormValidator} from '~/admin/components/AuthLoginForm/AuthLoginForm.validator';
+import {EAdminNavigation} from '~/admin/constants/navigation.constant';
+import {redirect} from '@remix-run/node';
 
 export const ADMIN_AUTH_STRATEGY = 'admin-pass';
 
@@ -51,3 +53,21 @@ authenticator.use(
   }),
   ADMIN_AUTH_STRATEGY
 );
+
+export const getAuthUser = async (request: Request, failureRedirect?: EAdminNavigation): Promise<User> => {
+  failureRedirect = failureRedirect ?? EAdminNavigation.authLogin;
+
+  try {
+    const {id} = await authenticator.isAuthenticated(request, {
+      failureRedirect,
+    });
+
+    return await prisma.user.findUniqueOrThrow({where: {id, deletedAt: null}});
+  } catch (e) {
+    if (e instanceof Response) {
+      throw e;
+    }
+
+    throw redirect(failureRedirect);
+  }
+};

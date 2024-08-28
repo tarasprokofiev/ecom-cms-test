@@ -1,5 +1,5 @@
 import {ActionFunctionArgs, redirect} from '@remix-run/node';
-import {authenticator} from '~/.server/admin/services/auth.service';
+import {getAuthUser} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {EAdminProductAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
@@ -8,9 +8,7 @@ import {deleteProduct} from '~/.server/admin/actions/products/single/delete-prod
 import {editCategory} from '~/.server/admin/actions/products/single/edit-category';
 
 export async function action({request, params}: ActionFunctionArgs) {
-  await authenticator.isAuthenticated(request, {
-    failureRedirect: EAdminNavigation.authLogin,
-  });
+  await getAuthUser(request);
 
   const {id} = params;
   if (!id) {

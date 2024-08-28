@@ -18,6 +18,7 @@ import {containsInsensitive} from '~/.server/shared/utils/prisma.util';
 import {ECustomersSortVariant} from '~/admin/components/customers/Index/Filters';
 import {ESoftDeleteStatus} from '~/admin/constants/entries.constant';
 import {getAuthUser} from '~/.server/admin/services/auth.service';
+import {hasAdminRoleOrRedirect} from '~/.server/admin/utils/auth.util';
 
 type CustomerOrderByWithRelationInput = Prisma.CustomerOrderByWithRelationInput;
 
@@ -30,7 +31,8 @@ export const customerQueryValidator = withZod(
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function loader({request}: LoaderFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const searchParams = requestToSearchParams(request);
   const {data} = await customerQueryValidator.validate(

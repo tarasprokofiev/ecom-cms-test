@@ -1,11 +1,11 @@
-import type {PrismaClient} from '@prisma/client'
-import {$Enums} from '@prisma/client'
-import {environment} from '~/.server/shared/constants/environment.constant'
-import {hashPassword} from '~/.server/shared/utils/auth.util';
+import type {PrismaClient} from '@prisma/client';
+import {$Enums} from '@prisma/client';
+import {environment} from '~/.server/shared/constants/environment.constant';
+import {hashPassword} from '~/.server/admin/utils/auth.util';
 
 export const createDefaultAdmin = async (prisma: PrismaClient) => {
   console.log('Seeding default admin');
-  const user = await prisma.user.findFirst({where: {email: environment.users.admin.email}})
+  const user = await prisma.user.findFirst({where: {email: environment.users.admin.email}});
 
   if (user) {
     console.log('Default admin already exists');
@@ -20,5 +20,5 @@ export const createDefaultAdmin = async (prisma: PrismaClient) => {
       password: await hashPassword(environment.users.admin.password),
       role: $Enums.AdminRole.ADMIN
     }
-  })
-}
+  });
+};

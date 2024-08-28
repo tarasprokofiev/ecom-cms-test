@@ -6,9 +6,11 @@ import {prisma} from '~/.server/shared/services/prisma.service';
 import {EAdminCustomerAction, FORM_ACTION_FIELD} from '~/admin/constants/action.constant';
 import {deleteAddress} from '~/.server/admin/actions/customers/addresses/edit/delete-address';
 import {editAddress} from '~/.server/admin/actions/customers/addresses/edit/edit-address';
+import {hasAdminRoleOrRedirect} from '~/.server/admin/utils/auth.util';
 
 export async function action({request, params}: ActionFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const {id, addressId} = params;
   if (!id || !addressId) {

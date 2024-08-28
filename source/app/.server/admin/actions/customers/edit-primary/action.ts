@@ -4,9 +4,11 @@ import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {validationError} from 'remix-validated-form';
 import {editPrimaryFormValidator} from '~/admin/components/customers/EditPrimaryForm/EditPrimaryForm.validator';
+import {hasAdminRoleOrRedirect} from '~/.server/admin/utils/auth.util';
 
 export async function action({request, params}: ActionFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const {id} = params;
   if (!id) {

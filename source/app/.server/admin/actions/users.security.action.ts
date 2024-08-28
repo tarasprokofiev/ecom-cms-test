@@ -4,10 +4,11 @@ import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {validationError} from 'remix-validated-form';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {usersSecurityFormValidator} from '~/admin/components/UsersSecurityForm/UsersSecurityForm.validator';
-import {hashPassword} from '~/.server/shared/utils/auth.util';
+import {hasAdminRoleOrRedirect, hashPassword} from '~/.server/admin/utils/auth.util';
 
 export async function adminUsersSecurityAction({request, params}: ActionFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const {id} = params;
   if (!id) {

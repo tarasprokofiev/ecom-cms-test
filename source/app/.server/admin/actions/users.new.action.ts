@@ -5,11 +5,12 @@ import {validationError} from 'remix-validated-form';
 import {usersNewFormValidator} from '~/admin/components/UsersNewForm/UsersNewForm.validator';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {$Enums} from '@prisma/client';
-import {hashPassword} from '~/.server/shared/utils/auth.util';
+import {hasAdminRoleOrRedirect, hashPassword} from '~/.server/admin/utils/auth.util';
 import {joinFirstName} from '~/admin/utils/user.util';
 
 export async function adminUsersNewAction({request}: ActionFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   // validate form data
   const data = await usersNewFormValidator.validate(

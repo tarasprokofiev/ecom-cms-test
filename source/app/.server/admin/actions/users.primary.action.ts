@@ -5,9 +5,11 @@ import {validationError} from 'remix-validated-form';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {usersPrimaryInfoFormValidator} from '~/admin/components/UsersPrimaryInfoForm/UsersPrimaryInfoForm.validator';
 import {joinFirstName} from '~/admin/utils/user.util';
+import {hasAdminRoleOrRedirect} from '~/.server/admin/utils/auth.util';
 
 export async function adminUsersPrimaryAction({request, params}: ActionFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const {id} = params;
   if (!id) {

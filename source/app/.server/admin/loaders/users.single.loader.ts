@@ -3,9 +3,11 @@ import {getAuthUser} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {userMapper} from '~/.server/admin/mappers/user.mapper';
 import {prisma} from '~/.server/shared/services/prisma.service';
+import {hasAdminRoleOrRedirect} from '~/.server/admin/utils/auth.util';
 
 export async function adminUsersSingleLoader({request, params}: LoaderFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const {id} = params;
   if (!id) {

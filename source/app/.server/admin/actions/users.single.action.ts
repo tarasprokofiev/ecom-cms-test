@@ -6,9 +6,11 @@ import {EAdminUserAction, FORM_ACTION_FIELD} from '~/admin/constants/action.cons
 import {adminUsersSingleRoleAction} from '~/.server/admin/actions/users.single.role.action';
 import {validationError} from 'remix-validated-form';
 import {adminUsersSingleDeleteAction} from '~/.server/admin/actions/users.single.delete.action';
+import {hasAdminRoleOrRedirect} from '~/.server/admin/utils/auth.util';
 
 export async function adminUsersSingleAction({request, params}: ActionFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const {id} = params;
   if (!id) {

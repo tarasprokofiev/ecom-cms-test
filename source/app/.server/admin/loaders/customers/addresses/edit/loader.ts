@@ -4,9 +4,11 @@ import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {prisma} from '~/.server/shared/services/prisma.service';
 import {customerAddressMapper} from '~/.server/admin/mappers/customer.mapper';
 import {SerializeFrom} from '@remix-run/server-runtime';
+import {hasAdminRoleOrRedirect} from '~/.server/admin/utils/auth.util';
 
 export async function loader({request, params}: LoaderFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   const {id, addressId} = params;
   if (!id || !addressId) {

@@ -3,11 +3,12 @@ import {getAuthUser} from '~/.server/admin/services/auth.service';
 import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {validationError} from 'remix-validated-form';
 import {prisma} from '~/.server/shared/services/prisma.service';
-import {hashPassword} from '~/.server/shared/utils/auth.util';
+import {hasAdminRoleOrRedirect, hashPassword} from '~/.server/admin/utils/auth.util';
 import {newFormValidator} from '~/admin/components/customers/NewForm/NewForm.validator';
 
 export async function action({request}: ActionFunctionArgs) {
-  await getAuthUser(request);
+  const authUser = await getAuthUser(request);
+  hasAdminRoleOrRedirect(authUser);
 
   // validate form data
   const data = await newFormValidator.validate(

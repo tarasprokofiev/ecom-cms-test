@@ -13,4 +13,5 @@ export enum EAdminNavigation {
   orders = '/admin/orders',
   carts = '/admin/carts',
   apiCategories = '/admin/api/categories',
+  apiChangeLanguage = '/admin/api/change-language',
 }

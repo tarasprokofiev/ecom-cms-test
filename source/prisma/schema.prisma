@@ -15,11 +15,13 @@ datasource db {
 
 // Models
 model User {
-  id        Int       @id @default(autoincrement())
-  fullName  String?
-  email     String    @unique
-  password  String
-  role      AdminRole @default(STUFF)
+  id       Int       @id @default(autoincrement())
+  fullName String?
+  email    String    @unique
+  password String
+  role     AdminRole @default(STUFF)
+  language Language  @default(EN)
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
@@ -138,4 +140,9 @@ enum ProductStatus {
   ACTIVE
   DRAFT
   ARCHIVED
+}
+
+enum Language {
+  EN
+  UK
 }

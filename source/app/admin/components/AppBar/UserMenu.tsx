@@ -27,6 +27,7 @@ export const UserMenu: FC<TUserMenuProps> = ({userMenuActive, user, toggleUserMe
     ]
   ), []);
 
+
   return (
     <TopBar.UserMenu
       actions={userMenuActions}

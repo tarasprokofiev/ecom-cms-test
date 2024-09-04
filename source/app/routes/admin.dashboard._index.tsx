@@ -17,7 +17,7 @@ export const meta: MetaFunction<typeof loader> = ({data}) => {
 export default function DashboardIndex() {
   const data = useLoaderData<typeof loader>();
 
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
 
   return (
     <div className="font-sans p-4">

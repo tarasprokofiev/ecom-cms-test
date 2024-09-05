@@ -1,6 +1,6 @@
 {
-  "navigation.dashboard" : "Dashboard",
-  "navigation.users" : "Users",
-  "page.dashboard.meta.title" : "Dashboard | Ecom CMS",
-  "page.dashboard.title" : "Dashboard"
+  "navigation.dashboard": "Dashboard",
+  "navigation.users": "Users",
+  "page.dashboard.meta.title": "Dashboard | Ecom CMS",
+  "page.dashboard.title": "Dashboard"
 }

@@ -25,21 +25,6 @@ export const PrimaryInfoCard: FC<Props> = (props) => {
             defaultValue={product?.slug}
           />
           <ValidatedTextField
-            label="Title"
-            type="text"
-            name="title"
-            autoComplete="off"
-            defaultValue={product?.title}
-          />
-          <ValidatedTextField
-            label="Description"
-            type="text"
-            name="description"
-            autoComplete="off"
-            defaultValue={product?.description || ''}
-            multiline={6}
-          />
-          <ValidatedTextField
             label="SKU"
             type="text"
             name="sku"

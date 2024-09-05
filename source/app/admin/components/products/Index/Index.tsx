@@ -8,6 +8,8 @@ import {usePagination} from '~/admin/hooks/usePagination';
 import {TProductDto} from '~/.server/admin/dto/product.dto';
 import type {TAdminProductsLoaderData} from '~/.server/admin/loaders/products/index/loader';
 import {Filters} from './Filters';
+import {translatedTitle} from '~/admin/utils/product.util';
+import {useTranslation} from 'react-i18next';
 
 export interface ListProps {
   products: TProductDto[];
@@ -17,6 +19,7 @@ export interface ListProps {
 
 
 export const Index: FC<ListProps> = ({products, query, pagination}) => {
+  const {i18n} = useTranslation();
   const paginationProps = usePagination(pagination);
   const resourceName = useMemo(() => ({
     singular: 'product',
@@ -24,8 +27,8 @@ export const Index: FC<ListProps> = ({products, query, pagination}) => {
   }), []);
 
   const headings: NonEmptyArray<IndexTableHeading> = useMemo(() => ([
-    {title: 'Title'},
     {title: 'Slug'},
+    {title: 'Title'},
     {title: 'Category'},
     {title: 'SKU'},
     {title: 'Barcode'},
@@ -35,7 +38,7 @@ export const Index: FC<ListProps> = ({products, query, pagination}) => {
 
   const rowMarkup = products.map(
     (
-      {id, title, slug, sku, barcode, status, quantity, category},
+      {id, slug, sku, barcode, status, quantity, category, translations},
       index,
     ) => (
       <IndexTable.Row
@@ -44,9 +47,11 @@ export const Index: FC<ListProps> = ({products, query, pagination}) => {
         position={index}
       >
         <IndexTable.Cell>
-          <Link url={`${EAdminNavigation.products}/${id}`}>{title}</Link>
+          <Link url={`${EAdminNavigation.products}/${id}`}>{slug}</Link>
         </IndexTable.Cell>
-        <IndexTable.Cell>{slug}</IndexTable.Cell>
+        <IndexTable.Cell>
+          {translatedTitle(translations, i18n.language)}
+        </IndexTable.Cell>
         <IndexTable.Cell>{category?.title || '-/-'}</IndexTable.Cell>
         <IndexTable.Cell>{sku}</IndexTable.Cell>
         <IndexTable.Cell>{barcode}</IndexTable.Cell>

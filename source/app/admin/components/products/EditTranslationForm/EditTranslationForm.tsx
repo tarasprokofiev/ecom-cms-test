@@ -1,19 +1,22 @@
 import {BlockStack, Box, Layout} from '@shopify/polaris';
-import React from 'react';
-import {PrimaryInfoCard} from './PrimaryInfoCard';
+import React, {FC} from 'react';
+import {TProductDto} from '~/.server/admin/dto/product.dto';
 import {TitleCard} from '~/admin/components/products/NewForm/TitleCard';
 import {DescriptionCard} from '~/admin/components/products/NewForm/DescriptionCard';
 import {LanguageHiddenCard} from '~/admin/components/products/NewForm/LanguageHiddenCard';
 
-export const NewForm = () => {
+type Props = {
+  product: Omit<TProductDto, 'category'>
+}
+
+export const EditTranslationForm: FC<Props> = ({product}) => {
   return (
     <Box paddingBlockEnd="500">
       <Layout>
         <Layout.Section>
           <BlockStack gap="500">
-            <PrimaryInfoCard/>
-            <TitleCard/>
-            <DescriptionCard/>
+            <TitleCard product={product}/>
+            <DescriptionCard product={product}/>
             <LanguageHiddenCard/>
           </BlockStack>
         </Layout.Section>

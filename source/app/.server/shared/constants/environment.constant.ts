@@ -16,4 +16,4 @@ export const environment = {
       password: String(env.DEFAULT_ADMIN_PASSWORD),
     }
   }
-}
+};

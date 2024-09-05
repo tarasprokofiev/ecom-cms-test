@@ -4,20 +4,16 @@ import {
   barcodeRule,
   compareAtPriceRule,
   costPerItemRule,
-  descriptionRule,
   priceRule,
   quantityRule,
   skuRule,
-  slugRule,
-  titleRule
+  slugRule
 } from '~/admin/components/products/NewForm/NewForm.validator';
 
 
 export const editPrimaryFormValidator = withZod(
   z.object({
     slug: slugRule,
-    title: titleRule,
-    description: descriptionRule,
     price: priceRule,
     costPerItem: costPerItemRule,
     compareAtPrice: compareAtPriceRule,

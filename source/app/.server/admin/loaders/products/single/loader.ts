@@ -18,6 +18,7 @@ export async function loader({request, params}: LoaderFunctionArgs) {
   const product = await prisma.product.findFirst({
     include: {
       category: true,
+      translations: true,
     },
     where: {id: Number(id)}
   });

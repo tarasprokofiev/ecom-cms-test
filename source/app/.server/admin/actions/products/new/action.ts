@@ -17,7 +17,7 @@ export async function action({request}: ActionFunctionArgs) {
     return validationError(data.error);
   }
 
-  const {description, title, slug, sku, compareAtPrice, price, barcode, quantity, costPerItem} = data.data;
+  const {slug, sku, compareAtPrice, price, barcode, quantity, costPerItem, translations} = data.data;
 
   // check unique slug
   const exist = await prisma.product.findFirst({where: {slug}});
@@ -33,8 +33,6 @@ export async function action({request}: ActionFunctionArgs) {
   const newProduct = await prisma.product.create({
     data: {
       slug,
-      title,
-      description,
       sku,
       compareAtPrice,
       price,
@@ -42,6 +40,13 @@ export async function action({request}: ActionFunctionArgs) {
       quantity,
       costPerItem,
     }
+  });
+
+  await prisma.productTranslation.createMany({
+    data: translations.map((translation) => ({
+      ...translation,
+      productId: newProduct.id
+    }))
   });
 
   return redirect(`${EAdminNavigation.products}/${newProduct.id}`);

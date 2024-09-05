@@ -32,22 +32,6 @@ export const PrimaryInfoCard: FC<PrimaryInfoCardProps> = ({product}) => {
         </BlockStack>
         <BlockStack gap="200">
           <Text as="h3" variant="headingXs" fontWeight="medium">
-            Title
-          </Text>
-          <Text as="p" variant="bodyMd">
-            {product.title}
-          </Text>
-        </BlockStack>
-        <BlockStack gap="200">
-          <Text as="h3" variant="headingXs" fontWeight="medium">
-            Description
-          </Text>
-          <Text as="p" variant="bodyMd">
-            {product.description}
-          </Text>
-        </BlockStack>
-        <BlockStack gap="200">
-          <Text as="h3" variant="headingXs" fontWeight="medium">
             SKU
           </Text>
           <Text as="p" variant="bodyMd">

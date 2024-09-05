@@ -8,14 +8,14 @@ import {ValidatedAction} from '~/admin/ui/ValidatedAction/ValidatedAction';
 import {EAdminProductAction} from '~/admin/constants/action.constant';
 
 type Props = {
-  product: Pick<TProductDto, 'title'>;
+  product: Pick<TProductDto, 'translations'>;
   toggleActive: () => void;
 }
 
 export const DeleteForm: FC<Props> = (props) => {
   const {product, toggleActive} = props;
-  const {title} = product;
-
+  // const {title} = product;
+  const title = 'Fix me';
   return (
     <ValidatedForm validator={deleteFormValidator} method="post" onSubmit={toggleActive}>
       <Box padding="200" paddingBlockEnd="0">

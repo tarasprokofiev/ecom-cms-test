@@ -47,10 +47,18 @@ export async function loader({request}: LoaderFunctionArgs) {
   if (search) {
     searchQuery = {
       OR: [
-        {title: containsInsensitive(search)},
         {slug: containsInsensitive(search)},
         {sku: containsInsensitive(search)},
         {barcode: containsInsensitive(search)},
+        {
+          translations: {
+            some: {
+              OR: [
+                {title: containsInsensitive(search)},
+              ]
+            }
+          }
+        }
       ]
     };
   }
@@ -74,6 +82,7 @@ export async function loader({request}: LoaderFunctionArgs) {
     skip: pagination.skip,
     include: {
       category: true,
+      translations: true,
     },
     where: {
       ...searchQuery,

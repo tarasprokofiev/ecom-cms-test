@@ -1,5 +1,6 @@
 import {withZod} from '@rvf/zod';
 import {z} from 'zod';
+import {$Enums} from '@prisma/client';
 
 export const slugRule = z.string().trim().min(1, {message: 'Slug is required'});
 export const titleRule = z.string().trim().min(1, {message: 'Title is required'});
@@ -11,18 +12,23 @@ export const quantityRule = z.coerce.number().int().min(1, {message: 'Quantity m
 export const skuRule = z.string().trim().max(256, {message: 'SKU max length: 256'}).optional();
 export const barcodeRule = z.string().trim().max(256, {message: 'Barcode max length: 256'}).optional();
 export const categoryIdRule = z.coerce.number().positive({message: 'Category is required'});
+export const languageRule = z.nativeEnum($Enums.Language);
 
+export const translationRule = z.object({
+  title: titleRule,
+  description: descriptionRule,
+  language: languageRule
+});
 
 export const newFormValidator = withZod(
   z.object({
     slug: slugRule,
-    title: titleRule,
-    description: descriptionRule,
     price: priceRule,
     costPerItem: costPerItemRule,
     compareAtPrice: compareAtPriceRule,
     quantity: quantityRule,
     sku: skuRule,
     barcode: barcodeRule,
+    translations: z.array(translationRule),
   })
 );

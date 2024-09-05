@@ -29,7 +29,7 @@ export default function AdminCustomersSingle() {
   if (!data?.customer) {
     return null;
   }
-  
+
   return (
     <Page
       title={`${data?.customer.firstName} ${data?.customer.lastName}`}

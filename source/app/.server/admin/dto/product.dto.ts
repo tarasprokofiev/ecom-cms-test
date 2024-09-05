@@ -1,5 +1,7 @@
-import type {Product} from '@prisma/client';
+import type {Product, ProductTranslation} from '@prisma/client';
 import {TCategoryDto} from '~/.server/admin/dto/category.dto';
+
+export type TProductTranslateDto = Pick<ProductTranslation, 'title' | 'description' | 'language'>;
 
 type ExcludedField = 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'price' |
   'costPerItem' | 'compareAtPrice' | 'quantity' | 'avgRate' | 'totalReviews' | 'categoryId';
@@ -16,4 +18,5 @@ export type TProductDto = Omit<Product, ExcludedField> & {
   deletedAt: string | null;
   categoryId: string | null;
   category: TCategoryDto | null;
+  translations: TProductTranslateDto[];
 }

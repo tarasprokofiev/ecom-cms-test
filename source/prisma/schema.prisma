@@ -95,8 +95,6 @@ model Category {
 model Product {
   id             Int           @id @default(autoincrement())
   slug           String        @unique
-  title          String
-  description    String
   price          Int
   costPerItem    Int
   compareAtPrice Int
@@ -113,21 +111,35 @@ model Product {
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  translations ProductTranslation[]
+
   // categories      Category[]
   // images          ProductImage[]
   // variants        ProductVariant[]
   // reviews         ProductReview[]
-
   @@index([status], name: "ProductStatusIndex")
   @@index([categoryId], name: "ProductCategoryIdIndex")
   @@index([createdAt], name: "ProductCreatedAtIndex")
   @@index([updatedAt], name: "ProductUpdatedAtIndex")
   @@index([deletedAt], name: "ProductDeletedAtIndex")
-  @@index([title, slug, sku, barcode], name: "ProductSearchIndex")
+  @@index([sku, barcode], name: "ProductSearchIndex")
   @@index([price], name: "ProductPriceIndex")
   @@index([compareAtPrice], name: "ProductCompareAtPriceIndex")
   @@index([avgRate], name: "ProductAvgRateIndex")
   @@index([totalReviews], name: "ProductTotalReviewsIndex")
+}
+
+model ProductTranslation {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  language    Language @default(EN)
+
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id])
+
+  @@unique([productId, language], name: "ProductTranslationProductIdLanguageUnique")
+  @@index([title], name: "ProductTranslationSearchIndex")
 }
 
 // Enums

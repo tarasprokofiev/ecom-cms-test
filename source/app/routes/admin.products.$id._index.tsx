@@ -5,12 +5,15 @@ import {EAdminNavigation} from '~/admin/constants/navigation.constant';
 import {TAdminProductsSingleLoader} from '~/.server/admin/loaders/products/single/loader';
 import {Single} from '~/admin/components/products/Single/Single';
 import {DeleteForm} from '~/admin/components/products/Single/DeleteForm';
+import {translatedTitle} from '~/admin/utils/product.util';
+import {useTranslation} from 'react-i18next';
 
 export {action} from '~/.server/admin/actions/products/single/action';
 
 export default function AdminProductsIdIndex() {
   const data = useRouteLoaderData<TAdminProductsSingleLoader>('routes/admin.products.$id');
   const [active, setActive] = useState(false);
+  const {i18n} = useTranslation();
 
   const toggleActive = useCallback(() => setActive((active) => !active), []);
 
@@ -32,7 +35,7 @@ export default function AdminProductsIdIndex() {
 
   return (
     <Page
-      title={`${data?.product.title}`}
+      title={translatedTitle(data?.product.translations, i18n.language)}
       backAction={{
         url: EAdminNavigation.products
       }}

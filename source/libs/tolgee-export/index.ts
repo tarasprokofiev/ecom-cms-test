@@ -19,7 +19,7 @@ const downloadTranslations = async () => {
   const data = JSON.stringify({
     'format': 'JSON',
     'filterState': ['TRANSLATED', 'REVIEWED'],
-    'structureDelimiter': '',
+    'structureDelimiter': '.',
     'filterNamespace': [''],
     'zip': true,
     'supportArrays': false,

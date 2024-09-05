@@ -1,6 +1,420 @@
 {
-  "navigation.dashboard": "Dashboard",
-  "navigation.users": "Users",
-  "page.dashboard.meta.title": "Dashboard | Ecom CMS",
-  "page.dashboard.title": "Dashboard"
+  "Polaris" : {
+    "ActionList" : {
+      "SearchField" : {
+        "clearButtonLabel" : "Clear",
+        "placeholder" : "Search actions",
+        "search" : "Search"
+      }
+    },
+    "ActionMenu" : {
+      "Actions" : {
+        "moreActions" : "More actions"
+      },
+      "RollupActions" : {
+        "rollupButton" : "View actions"
+      }
+    },
+    "Autocomplete" : {
+      "ellipsis" : "{content}…",
+      "spinnerAccessibilityLabel" : "Loading"
+    },
+    "Avatar" : {
+      "label" : "Avatar",
+      "labelWithInitials" : "Avatar with initials {initials}"
+    },
+    "Badge" : {
+      "PROGRESS_LABELS" : {
+        "complete" : "Complete",
+        "incomplete" : "Incomplete",
+        "partiallyComplete" : "Partially complete"
+      },
+      "TONE_LABELS" : {
+        "attention" : "Attention",
+        "critical" : "Critical",
+        "enabled" : "Enabled",
+        "info" : "Info",
+        "new" : "New",
+        "readOnly" : "Read-only",
+        "success" : "Success",
+        "warning" : "Warning"
+      },
+      "progressAndTone" : "{toneLabel} {progressLabel}"
+    },
+    "Banner" : {
+      "dismissButton" : "Dismiss notification"
+    },
+    "Button" : {
+      "spinnerAccessibilityLabel" : "Loading"
+    },
+    "Common" : {
+      "cancel" : "Cancel",
+      "checkbox" : "checkbox",
+      "clear" : "Clear",
+      "close" : "Close",
+      "more" : "More",
+      "submit" : "Submit",
+      "undo" : "Undo"
+    },
+    "ContextualSaveBar" : {
+      "discard" : "Discard",
+      "save" : "Save"
+    },
+    "DataTable" : {
+      "navAccessibilityLabel" : "Scroll table {direction} one column",
+      "sortAccessibilityLabel" : "sort {direction} by",
+      "totalRowHeading" : "Total",
+      "totalsRowHeading" : "Totals"
+    },
+    "DatePicker" : {
+      "days" : {
+        "friday" : "Friday",
+        "monday" : "Monday",
+        "saturday" : "Saturday",
+        "sunday" : "Sunday",
+        "thursday" : "Thursday",
+        "tuesday" : "Tuesday",
+        "wednesday" : "Wednesday"
+      },
+      "daysAbbreviated" : {
+        "friday" : "Fr",
+        "monday" : "Mo",
+        "saturday" : "Sa",
+        "sunday" : "Su",
+        "thursday" : "Th",
+        "tuesday" : "Tu",
+        "wednesday" : "We"
+      },
+      "end" : "End of range",
+      "months" : {
+        "april" : "April",
+        "august" : "August",
+        "december" : "December",
+        "february" : "February",
+        "january" : "January",
+        "july" : "July",
+        "june" : "June",
+        "march" : "March",
+        "may" : "May",
+        "november" : "November",
+        "october" : "October",
+        "september" : "September"
+      },
+      "nextMonth" : "Show next month, {nextMonth} {nextYear}",
+      "previousMonth" : "Show previous month, {previousMonthName} {showPreviousYear}",
+      "start" : "Start of range",
+      "today" : "Today "
+    },
+    "DiscardConfirmationModal" : {
+      "message" : "If you discard changes, you’ll delete any edits you made since you last saved.",
+      "primaryAction" : "Discard changes",
+      "secondaryAction" : "Continue editing",
+      "title" : "Discard all unsaved changes"
+    },
+    "DropZone" : {
+      "allowMultiple" : {
+        "actionHintFile" : "or drop files to upload",
+        "actionHintImage" : "or drop images to upload",
+        "actionHintVideo" : "or drop videos to upload",
+        "actionTitleFile" : "Add files",
+        "actionTitleImage" : "Add images",
+        "actionTitleVideo" : "Add videos",
+        "labelFile" : "Upload files",
+        "labelImage" : "Upload images",
+        "labelVideo" : "Upload videos",
+        "overlayTextFile" : "Drop files to upload",
+        "overlayTextImage" : "Drop images to upload",
+        "overlayTextVideo" : "Drop videos to upload"
+      },
+      "errorOverlayTextFile" : "File type is not valid",
+      "errorOverlayTextImage" : "Image type is not valid",
+      "errorOverlayTextVideo" : "Video type is not valid",
+      "single" : {
+        "actionHintFile" : "or drop file to upload",
+        "actionHintImage" : "or drop image to upload",
+        "actionHintVideo" : "or drop video to upload",
+        "actionTitleFile" : "Add file",
+        "actionTitleImage" : "Add image",
+        "actionTitleVideo" : "Add video",
+        "labelFile" : "Upload file",
+        "labelImage" : "Upload image",
+        "labelVideo" : "Upload video",
+        "overlayTextFile" : "Drop file to upload",
+        "overlayTextImage" : "Drop image to upload",
+        "overlayTextVideo" : "Drop video to upload"
+      }
+    },
+    "EmptySearchResult" : {
+      "altText" : "Empty search results"
+    },
+    "FilterPill" : {
+      "clear" : "Clear",
+      "unsavedChanges" : "Unsaved changes - {label}"
+    },
+    "Filters" : {
+      "addFilter" : "Add filter",
+      "cancel" : "Cancel",
+      "clear" : "Clear",
+      "clearAllFilters" : "Clear all filters",
+      "clearFilters" : "Clear all",
+      "clearLabel" : "Clear {filterName}",
+      "done" : "Done",
+      "filter" : "Filter {resourceName}",
+      "moreFilters" : "More filters",
+      "moreFiltersWithCount" : "More filters ({count})",
+      "noFiltersApplied" : "No filters applied",
+      "searchInView" : "in:{viewName}"
+    },
+    "Frame" : {
+      "Navigation" : {
+        "closeMobileNavigationLabel" : "Close navigation"
+      },
+      "navigationLabel" : "Navigation",
+      "skipToContent" : "Skip to content"
+    },
+    "FullscreenBar" : {
+      "accessibilityLabel" : "Exit fullscreen mode",
+      "back" : "Back"
+    },
+    "IndexFilters" : {
+      "EditColumnsButton" : {
+        "accessibilityLabel" : "Customize table column order and visibility",
+        "tooltip" : "Edit columns"
+      },
+      "SortButton" : {
+        "ariaLabel" : "Sort the results",
+        "sorting" : {
+          "asc" : "Ascending",
+          "az" : "A-Z",
+          "desc" : "Descending",
+          "za" : "Z-A"
+        },
+        "title" : "Sort by",
+        "tooltip" : "Sort"
+      },
+      "UpdateButtons" : {
+        "cancel" : "Cancel",
+        "modal" : {
+          "cancel" : "Cancel",
+          "label" : "Name",
+          "sameName" : "A view with this name already exists. Please choose a different name.",
+          "save" : "Save",
+          "title" : "Save view as"
+        },
+        "save" : "Save",
+        "saveAs" : "Save as",
+        "update" : "Update"
+      },
+      "addView" : "Add a new view",
+      "newView" : "Custom search",
+      "searchFilterAccessibilityLabel" : "Search and filter results",
+      "searchFilterTooltip" : "Search and filter",
+      "searchFilterTooltipWithShortcut" : "Search and filter (F)",
+      "sort" : "Sort your results"
+    },
+    "IndexProvider" : {
+      "a11yCheckboxDeselectAllMultiple" : "Deselect all {itemsLength} {resourceNamePlural}",
+      "a11yCheckboxDeselectAllSingle" : "Deselect {resourceNameSingular}",
+      "a11yCheckboxSelectAllMultiple" : "Select all {itemsLength} {resourceNamePlural}",
+      "a11yCheckboxSelectAllSingle" : "Select {resourceNameSingular}",
+      "allItemsSelected" : "All {itemsLength}+ {resourceNamePlural} are selected",
+      "defaultItemPlural" : "Items",
+      "defaultItemSingular" : "Item",
+      "selected" : "{selectedItemsCount} selected"
+    },
+    "IndexTable" : {
+      "emptySearchDescription" : "Try changing the filters or search term",
+      "emptySearchTitle" : "No {resourceNamePlural} found",
+      "onboardingBadgeText" : "New",
+      "resourceLoadingAccessibilityLabel" : "Loading {resourceNamePlural}…",
+      "selectAllItems" : "Select all {itemsLength}+ {resourceNamePlural}",
+      "selectAllLabel" : "Select all {resourceNamePlural}",
+      "selectButtonText" : "Select",
+      "selectItem" : "Select {resourceName}",
+      "selected" : "{selectedItemsCount} selected",
+      "sortAccessibilityLabel" : "sort {direction} by",
+      "undo" : "Undo"
+    },
+    "Loading" : {
+      "label" : "Page loading bar"
+    },
+    "MediaCard" : {
+      "dismissButton" : "Dismiss",
+      "popoverButton" : "Actions"
+    },
+    "Modal" : {
+      "iFrameTitle" : "body markup",
+      "modalWarning" : "These required properties are missing from Modal: {missingProps}"
+    },
+    "Page" : {
+      "Header" : {
+        "pageReadyAccessibilityLabel" : "{title}. This page is ready",
+        "rollupActionsLabel" : "View actions for {title}"
+      }
+    },
+    "Pagination" : {
+      "next" : "Next",
+      "pagination" : "Pagination",
+      "previous" : "Previous"
+    },
+    "ProgressBar" : {
+      "exceedWarningMessage" : "Values passed to the progress prop shouldn’t exceed 100. Setting {progress} to 100.",
+      "negativeWarningMessage" : "Values passed to the progress prop shouldn’t be negative. Resetting {progress} to 0."
+    },
+    "ResourceList" : {
+      "BulkActions" : {
+        "actionsActivatorLabel" : "Actions",
+        "moreActionsActivatorLabel" : "More actions"
+      },
+      "Item" : {
+        "actionsDropdown" : "Actions dropdown",
+        "actionsDropdownLabel" : "Actions for {accessibilityLabel}",
+        "viewItem" : "View details for {itemName}"
+      },
+      "a11yCheckboxDeselectAllMultiple" : "Deselect all {itemsLength} {resourceNamePlural}",
+      "a11yCheckboxDeselectAllSingle" : "Deselect {resourceNameSingular}",
+      "a11yCheckboxSelectAllMultiple" : "Select all {itemsLength} {resourceNamePlural}",
+      "a11yCheckboxSelectAllSingle" : "Select {resourceNameSingular}",
+      "allFilteredItemsSelected" : "All {itemsLength}+ {resourceNamePlural} in this filter are selected",
+      "allItemsSelected" : "All {itemsLength}+ {resourceNamePlural} in your store are selected",
+      "defaultItemPlural" : "items",
+      "defaultItemSingular" : "item",
+      "emptySearchResultDescription" : "Try changing the filters or search term",
+      "emptySearchResultTitle" : "No {resourceNamePlural} found",
+      "loading" : "Loading {resource}",
+      "selectAllFilteredItems" : "Select all {itemsLength}+ {resourceNamePlural} in this filter",
+      "selectAllItems" : "Select all {itemsLength}+ {resourceNamePlural} in your store",
+      "selectButtonText" : "Select",
+      "selected" : "{selectedItemsCount} selected",
+      "showing" : "Showing {itemsCount} {resource}",
+      "showingTotalCount" : "Showing {itemsCount} of {totalItemsCount} {resource}",
+      "sortingLabel" : "Sort by"
+    },
+    "SkeletonPage" : {
+      "loadingLabel" : "Page loading"
+    },
+    "Tabs" : {
+      "CreateViewModal" : {
+        "cancel" : "Cancel",
+        "create" : "Create view",
+        "errors" : {
+          "sameName" : "A view with this name already exists. Please choose a different name."
+        },
+        "label" : "Name",
+        "title" : "Create new view"
+      },
+      "DuplicateModal" : {
+        "cancel" : "Cancel",
+        "create" : "Create view",
+        "errors" : {
+          "sameName" : "A view with this name already exists. Please choose a different name."
+        },
+        "label" : "Name",
+        "title" : "Duplicate view"
+      },
+      "RenameModal" : {
+        "cancel" : "Cancel",
+        "create" : "Save",
+        "errors" : {
+          "sameName" : "A view with this name already exists. Please choose a different name."
+        },
+        "label" : "Name",
+        "title" : "Rename view"
+      },
+      "Tab" : {
+        "copy" : "Copy of {name}",
+        "delete" : "Delete view",
+        "deleteModal" : {
+          "cancel" : "Cancel",
+          "delete" : "Delete view",
+          "description" : "This can’t be undone. {viewName} view will no longer be available in your admin.",
+          "title" : "Delete view?"
+        },
+        "duplicate" : "Duplicate view",
+        "edit" : "Edit view",
+        "editColumns" : "Edit columns",
+        "rename" : "Rename view"
+      },
+      "newViewAccessibilityLabel" : "Create new view",
+      "newViewTooltip" : "Create view",
+      "toggleTabsLabel" : "More views"
+    },
+    "Tag" : {
+      "ariaLabel" : "Remove {children}"
+    },
+    "TextField" : {
+      "characterCount" : "{count} characters",
+      "characterCountWithMaxLength" : "{count} of {limit} characters used"
+    },
+    "TooltipOverlay" : {
+      "accessibilityLabel" : "Tooltip: {label}"
+    },
+    "TopBar" : {
+      "SearchField" : {
+        "clearButtonLabel" : "Clear",
+        "search" : "Search"
+      },
+      "toggleMenuLabel" : "Toggle menu"
+    },
+    "VideoThumbnail" : {
+      "playButtonA11yLabel" : {
+        "default" : "Play video",
+        "defaultWithDuration" : "Play video of length {duration}",
+        "duration" : {
+          "hours" : {
+            "one" : {
+              "andMinute" : "{hourCount} hour and {minuteCount} minute",
+              "andMinutes" : "{hourCount} hour and {minuteCount} minutes",
+              "andSecond" : "{hourCount} hour and {secondCount} second",
+              "andSeconds" : "{hourCount} hour and {secondCount} seconds",
+              "minuteAndSecond" : "{hourCount} hour, {minuteCount} minute, and {secondCount} second",
+              "minuteAndSeconds" : "{hourCount} hour, {minuteCount} minute, and {secondCount} seconds",
+              "minutesAndSecond" : "{hourCount} hour, {minuteCount} minutes, and {secondCount} second",
+              "minutesAndSeconds" : "{hourCount} hour, {minuteCount} minutes, and {secondCount} seconds",
+              "only" : "{hourCount} hour"
+            },
+            "other" : {
+              "andMinute" : "{hourCount} hours and {minuteCount} minute",
+              "andMinutes" : "{hourCount} hours and {minuteCount} minutes",
+              "andSecond" : "{hourCount} hours and {secondCount} second",
+              "andSeconds" : "{hourCount} hours and {secondCount} seconds",
+              "minuteAndSecond" : "{hourCount} hours, {minuteCount} minute, and {secondCount} second",
+              "minuteAndSeconds" : "{hourCount} hours, {minuteCount} minute, and {secondCount} seconds",
+              "minutesAndSecond" : "{hourCount} hours, {minuteCount} minutes, and {secondCount} second",
+              "minutesAndSeconds" : "{hourCount} hours, {minuteCount} minutes, and {secondCount} seconds",
+              "only" : "{hourCount} hours"
+            }
+          },
+          "minutes" : {
+            "one" : {
+              "andSecond" : "{minuteCount} minute and {secondCount} second",
+              "andSeconds" : "{minuteCount} minute and {secondCount} seconds",
+              "only" : "{minuteCount} minute"
+            },
+            "other" : {
+              "andSecond" : "{minuteCount} minutes and {secondCount} second",
+              "andSeconds" : "{minuteCount} minutes and {secondCount} seconds",
+              "only" : "{minuteCount} minutes"
+            }
+          },
+          "seconds" : {
+            "one" : "{secondCount} second",
+            "other" : "{secondCount} seconds"
+          }
+        }
+      }
+    }
+  },
+  "navigation" : {
+    "dashboard" : "Dashboard",
+    "users" : "Users"
+  },
+  "page" : {
+    "dashboard" : {
+      "meta" : {
+        "title" : "Dashboard | Ecom CMS"
+      },
+      "title" : "Dashboard"
+    }
+  }
 }

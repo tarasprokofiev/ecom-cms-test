@@ -1,6 +1,130 @@
 {
-  "navigation.dashboard": "Панель керування",
-  "navigation.users": "Користувачі",
-  "page.dashboard.meta.title": "Панель керування | Ecom CMS",
-  "page.dashboard.title": "Панель керування"
+  "Polaris" : {
+    "ActionList" : {
+      "SearchField" : {
+        "clearButtonLabel" : "Очистити",
+        "placeholder" : "Шукати дії",
+        "search" : "Пошук"
+      }
+    },
+    "ActionMenu" : {
+      "Actions" : {
+        "moreActions" : "Більше дій"
+      },
+      "RollupActions" : {
+        "rollupButton" : "Переглянути дії"
+      }
+    },
+    "Autocomplete" : {
+      "ellipsis" : "{content}…",
+      "spinnerAccessibilityLabel" : "Завантаження"
+    },
+    "Avatar" : {
+      "label" : "Аватар",
+      "labelWithInitials" : "Аватар з ініціалами {initials}"
+    },
+    "Badge" : {
+      "PROGRESS_LABELS" : {
+        "complete" : "Завершено",
+        "incomplete" : "Не завершено",
+        "partiallyComplete" : "Частково завершено"
+      },
+      "TONE_LABELS" : {
+        "attention" : "Увага",
+        "critical" : "Критично",
+        "enabled" : "Увімкнено",
+        "info" : "Інформація",
+        "new" : "Новий",
+        "readOnly" : "Тільки для читання",
+        "success" : "Успішно",
+        "warning" : "Попередження"
+      },
+      "progressAndTone" : "{toneLabel} {progressLabel}"
+    },
+    "Banner" : {
+      "dismissButton" : "Закрити сповіщення"
+    },
+    "Button" : {
+      "spinnerAccessibilityLabel" : "Завантаження"
+    },
+    "Common" : {
+      "cancel" : "Скасувати",
+      "checkbox" : "прапорець",
+      "clear" : "Очистити",
+      "close" : "Закрити",
+      "more" : "Більше",
+      "submit" : "Надіслати",
+      "undo" : "Скасувати"
+    },
+    "ContextualSaveBar" : {
+      "discard" : "Скасувати",
+      "save" : "Зберегти"
+    },
+    "DataTable" : {
+      "navAccessibilityLabel" : "Прокрутити таблицю {direction} на одну колонку",
+      "sortAccessibilityLabel" : "сортувати {direction} по",
+      "totalRowHeading" : "Разом",
+      "totalsRowHeading" : "Підсумки"
+    },
+    "DatePicker" : {
+      "days" : {
+        "friday" : "П’ятниця",
+        "monday" : "Понеділок",
+        "saturday" : "Субота",
+        "sunday" : "Неділя",
+        "thursday" : "Четвер",
+        "tuesday" : "Вівторок",
+        "wednesday" : "Середа"
+      },
+      "daysAbbreviated" : {
+        "friday" : "Пт",
+        "monday" : "Пн",
+        "saturday" : "Сб",
+        "sunday" : "Нд",
+        "thursday" : "Чт",
+        "tuesday" : "Вт",
+        "wednesday" : "Ср"
+      },
+      "end" : "Кінець діапазону",
+      "months" : {
+        "april" : "Квітень",
+        "august" : "Серпень",
+        "december" : "Грудень",
+        "february" : "Лютий",
+        "january" : "Січень",
+        "july" : "Липень",
+        "june" : "Червень",
+        "march" : "Березень",
+        "may" : "Травень",
+        "november" : "Листопад",
+        "october" : "Жовтень",
+        "september" : "Вересень"
+      },
+      "nextMonth" : "Показати наступний місяць, {nextMonth} {nextYear}",
+      "previousMonth" : "Показати попередній місяць, {previousMonthName} {showPreviousYear}",
+      "start" : "Початок діапазону",
+      "today" : "Сьогодні"
+    },
+    "DiscardConfirmationModal" : {
+      "message" : "Якщо ви скасуєте зміни, всі правки з моменту останнього збереження будуть видалені.",
+      "primaryAction" : "Скасувати зміни",
+      "secondaryAction" : "Продовжити редагування",
+      "title" : "Скасувати всі незбережені зміни"
+    },
+    "Filters" : {
+      "addFilter" : "Додати фільтр"
+    }
+  },
+  "navigation" : {
+    "dashboard" : "Панель керування",
+    "users" : "Користувачі"
+  },
+  "page" : {
+    "dashboard" : {
+      "meta" : {
+        "title" : "Панель керування | Ecom CMS"
+      },
+      "title" : "Панель керування"
+    }
+  }
 }

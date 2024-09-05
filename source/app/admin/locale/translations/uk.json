@@ -1,4 +1,6 @@
 {
-  "page.dashboard.title": "Панель керування",
-  "page.dashboard.meta.title": "Панель керування | Ecom CMS"
+  "navigation.dashboard" : "Панель керування",
+  "navigation.users" : "Користувачі",
+  "page.dashboard.meta.title" : "Панель керування | Ecom CMS",
+  "page.dashboard.title" : "Панель керування"
 }

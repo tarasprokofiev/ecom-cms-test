@@ -5,6 +5,7 @@ import {useLocation} from 'react-router';
 import {FC, useMemo} from 'react';
 import {TUserDto} from '~/.server/admin/dto/user.dto';
 import {hasAdminRole} from '~/admin/utils/access.util';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
   user: TUserDto;
@@ -12,13 +13,14 @@ type Props = {
 
 export const BaseNav: FC<Props> = ({user}) => {
   const location = useLocation();
+  const {t, i18n} = useTranslation();
 
   const items = useMemo(() => {
     if (!hasAdminRole(user)) {
       return [
         {
           url: EAdminNavigation.dashboard,
-          label: 'Home',
+          label: t('navigation.dashboard'),
           icon: HomeIcon,
           matchPaths: [EAdminNavigation.dashboard],
         },
@@ -33,7 +35,7 @@ export const BaseNav: FC<Props> = ({user}) => {
     return [
       {
         url: EAdminNavigation.dashboard,
-        label: 'Home',
+        label: t('navigation.dashboard'),
         icon: HomeIcon,
         matchPaths: [EAdminNavigation.dashboard]
       },
@@ -73,7 +75,7 @@ export const BaseNav: FC<Props> = ({user}) => {
         ],
       },
     ];
-  }, [user.role]);
+  }, [user.role, t, i18n.language]);
 
   return (
     <Navigation location={location.pathname}>

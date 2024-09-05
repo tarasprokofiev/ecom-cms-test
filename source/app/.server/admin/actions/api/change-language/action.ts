@@ -31,7 +31,8 @@ export async function action({request}: ActionFunctionArgs) {
 
   session.set(LOCALE_SESSION_KEY, language.toLowerCase());
 
-  return redirect(EAdminNavigation.dashboard, {
+  const refererUrl = request.headers.get('Referer') || EAdminNavigation.dashboard;
+  return redirect(refererUrl, {
     headers: {'Set-Cookie': await sessionStorage.commitSession(session)},
   });
 }

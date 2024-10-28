@@ -1,45 +1,30 @@
-import {Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData,} from '@remix-run/react';
-import {json, LoaderFunctionArgs} from '@remix-run/node';
-import {useTranslation} from 'react-i18next';
-import {useChangeLanguage} from 'remix-i18next/react';
-import i18nServer from '~/.server/shared/services/i18next.service';
-import {EN_LANG} from '~/admin/locale/i18n.config';
-
-
-export async function loader({request}: LoaderFunctionArgs) {
-  const locale = await i18nServer.getLocale(request);
-  return json({locale});
-}
-
-
-export function Layout({children}: { children: React.ReactNode }) {
-  const data = useLoaderData<typeof loader>();
-  const {i18n} = useTranslation();
-  const locale = data?.locale || EN_LANG;
-
-  // This hook will change the i18n instance language to the current locale
-  // detected by the loader, this way, when we do something to change the
-  // language, this locale will change and i18next will load the correct
-  // translation files
-  useChangeLanguage(locale);
-
-  return (
-    <html lang={locale} dir={i18n.dir()}>
-    <head>
-      <meta charSet="utf-8"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1"/>
-      <Meta/>
-      <Links/>
-    </head>
-    <body>
-    {children}
-    <ScrollRestoration/>
-    <Scripts/>
-    </body>
-    </html>
-  );
-}
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "@remix-run/react";
 
 export default function App() {
-  return <Outlet/>;
+  return (
+    <html>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="preconnect" href="https://cdn.shopify.com/" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css"
+        />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
 }

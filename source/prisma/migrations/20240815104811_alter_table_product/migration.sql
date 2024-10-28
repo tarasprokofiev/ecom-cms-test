@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "Product" ALTER COLUMN "status" SET DEFAULT 'DRAFT',
-ALTER COLUMN "avgRate" SET DEFAULT 0,
-ALTER COLUMN "totalReviews" SET DEFAULT 0;

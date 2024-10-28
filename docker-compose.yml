@@ -25,6 +25,7 @@ services:
       TOLGEE_TRANSLATIONS_DIR: ${TOLGEE_TRANSLATIONS_DIR}
     volumes:
       - ./source:/app
+      - /home/dev/.config:/home/node/.config
     ports:
       - 3000:3000
     command:
